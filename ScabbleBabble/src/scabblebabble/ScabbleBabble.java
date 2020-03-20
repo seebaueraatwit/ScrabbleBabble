@@ -21,6 +21,8 @@ public class ScabbleBabble  extends Application {
 		final Button btn = new Button();
 		btn.setText("Click Me!");
 		
+		int j;
+		
 		final StackPane root = new StackPane();
 		root.getChildren().add(btn);
 		
