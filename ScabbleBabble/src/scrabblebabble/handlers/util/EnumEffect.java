@@ -1,4 +1,4 @@
-package scabblebabble.handlers.util;
+package scrabblebabble.handlers.util;
 
 public enum EnumEffect {
 	

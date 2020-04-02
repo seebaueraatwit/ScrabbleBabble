@@ -1,6 +1,6 @@
-package scabblebabble.game;
+package scrabblebabble.game;
 
-import scabblebabble.handlers.util.EnumLetter;
+import scrabblebabble.handlers.util.EnumLetter;
 
 public class LetterTile {
 

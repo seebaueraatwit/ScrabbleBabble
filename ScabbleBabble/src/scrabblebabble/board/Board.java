@@ -1,4 +1,4 @@
-package scabblebabble.board;
+package scrabblebabble.board;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +6,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import scabblebabble.handlers.util.EnumEffect;
+import scrabblebabble.handlers.util.EnumEffect;
 
 public class Board {
 
@@ -36,6 +36,7 @@ public class Board {
 				yF = scnr.nextInt();
 				bonF = scnr.next();
 				tileF = new BoardTile(xF, yF, null, parseBonus(bonF));
+				System.out.println("Loaded Tile from bonus File: " + tileF.toString());
 				grid[xF][yF] = tileF;
 			}
 		} catch (FileNotFoundException e) {
@@ -50,10 +51,14 @@ public class Board {
 	 * 
 	 */
 	public void Fill() {
+		BoardTile t = null;
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				if (grid[i][j] == null) {
-					grid[i][j] = new BoardTile(i,j);
+					t = new BoardTile(i,j);
+					grid[i][j] = t;
+					System.out.println("Loaded Tile from bonus File: " + t.toString());
+					t = null;
 				}
 			}
 		}

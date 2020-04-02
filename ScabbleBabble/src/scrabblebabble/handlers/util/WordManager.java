@@ -1,7 +1,7 @@
-package scabblebabble.handlers.util;
+package scrabblebabble.handlers.util;
 
-import scabblebabble.board.Board;
-import scabblebabble.game.LetterTile;
+import scrabblebabble.ScrabbleBabble;
+import scrabblebabble.game.LetterTile;
 
 public class WordManager {
 
@@ -33,17 +33,17 @@ public class WordManager {
 	public LetterTile[] compileIterativeWord(String hv, int rowCol, int start, int end) {
 		if(hv == "h") {
 			LetterTile[] out = new LetterTile[end - start];
-			for (int j = 0; j < Board.instance.grid[rowCol].length; j++) {
+			for (int j = 0; j < ScrabbleBabble.board.grid[rowCol].length; j++) {
 				if (j >= start && j <= end) {
-					out[j-start] = Board.instance.grid[rowCol][j].occupant;			
+					out[j-start] = ScrabbleBabble.board.grid[rowCol][j].occupant;			
 				}
 			}
 			return out;
 		} else if (hv == "v" ) {
 			LetterTile[] out = new LetterTile[end - start];
-			for (int j = 0; j < Board.instance.grid.length; j++) {
+			for (int j = 0; j < ScrabbleBabble.board.grid.length; j++) {
 				if (j >= start && j <= end) {
-					out[j-start] = Board.instance.grid[j][rowCol].occupant;			
+					out[j-start] = ScrabbleBabble.board.grid[j][rowCol].occupant;			
 				}
 			}
 			return out;

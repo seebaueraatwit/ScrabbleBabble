@@ -7,5 +7,5 @@ module ScabbleBabble {
 	requires javafx.swing;
 	requires javafx.swt;
 	requires javafx.web;
-	exports scabblebabble;
+	exports scrabblebabble;
 }

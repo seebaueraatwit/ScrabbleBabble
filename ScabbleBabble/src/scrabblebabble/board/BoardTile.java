@@ -1,7 +1,7 @@
-package scabblebabble.board;
+package scrabblebabble.board;
 
-import scabblebabble.game.LetterTile;
-import scabblebabble.handlers.util.EnumEffect;
+import scrabblebabble.game.LetterTile;
+import scrabblebabble.handlers.util.EnumEffect;
 
 public class BoardTile {
 
@@ -22,5 +22,9 @@ public class BoardTile {
 		y = yIn;
 	}
 	
+	@Override
+	public String toString() {
+		return "Space (" + x + "," + y + "), Bonus: " + effect.name() + ", Occupant: " + (occupant != null ? occupant.toString() : "null");		
+	}
 	
 }

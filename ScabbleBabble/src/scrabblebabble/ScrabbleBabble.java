@@ -1,13 +1,13 @@
-package scabblebabble;
+package scrabblebabble;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import scabblebabble.board.Board;
+import scrabblebabble.board.Board;
 
-public class ScabbleBabble  extends Application {
+public class ScrabbleBabble  extends Application {
 
 	public static Board board;
 	
@@ -18,6 +18,7 @@ public class ScabbleBabble  extends Application {
 	
 	@Override
 	public void start(Stage s) throws Exception {
+		
 		
 		
 		
