@@ -21,8 +21,8 @@ public class ScrabbleBabble  extends Application {
 		
 		
 		
-		
 	}
 
+	
 	
 }

@@ -5,6 +5,12 @@ import scrabblebabble.game.LetterTile;
 
 public class WordManager {
 
+	/**
+	 * returns the score from an array of tiles gathered
+	 * 
+	 * @param tiles
+	 * @return
+	 */
 	public int getScore(LetterTile[] tiles) {
 		int out = 0;
 		for (LetterTile ti : tiles) {
@@ -13,6 +19,12 @@ public class WordManager {
 		return out;
 	}
 	
+	/**
+	 * returns the word of the array of tiles sent
+	 * 
+	 * @param tiles
+	 * @return
+	 */
 	public String getWord(LetterTile[] tiles) {
 		String out = "";
 		for (LetterTile ti : tiles) {
