@@ -8,13 +8,18 @@ public class BoardTile {
 	public LetterTile occupant;	
 	public final EnumEffect effect;
 	
-	public BoardTile() {
-		this(null, EnumEffect.EMPTY);
+	public final int x;
+	public final int y;
+	
+	public BoardTile(int xIn, int yIn) {
+		this(xIn, yIn, null, EnumEffect.EMPTY);
 	}
 	
-	public BoardTile(LetterTile occIn, EnumEffect effIn) {
+	public BoardTile(int xIn, int yIn, LetterTile occIn, EnumEffect effIn) {
 		this.occupant = null;
 		this.effect = effIn;
+		x = xIn;
+		y = yIn;
 	}
 	
 	
