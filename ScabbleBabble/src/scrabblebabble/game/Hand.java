@@ -13,6 +13,7 @@ public class Hand {
 	 */
 	public void applyRandom() {
 		// TODO
+		System.out.println("RANDOMIZED HAND");
 	}
 	
 	/**
