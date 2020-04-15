@@ -3,9 +3,11 @@ package scrabblebabble.game;
 import java.util.ArrayList;
 import java.util.Deque;
 
+import scrabblebabble.ScrabbleBabble;
+
 public class Hand {
 
-	ArrayList<LetterTile> conent = new ArrayList<LetterTile>(7);
+	public ArrayList<LetterTile> content = new ArrayList<LetterTile>(7);
 	
 	
 	/**
@@ -13,6 +15,7 @@ public class Hand {
 	 */
 	public void applyRandom() {
 		// TODO
+		content.add(ScrabbleBabble.tile_bag.drawRandom());
 		System.out.println("RANDOMIZED HAND");
 	}
 	

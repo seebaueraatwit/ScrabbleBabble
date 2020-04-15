@@ -1,6 +1,5 @@
 package scrabblebabble;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -10,12 +9,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -34,6 +38,8 @@ public class ScrabbleBabble  extends Application implements Initializable {
 	public static TileBag tile_bag;
 	
 	public static ScrabbleBabble instance;
+	
+	public static Node dragging;
 	
 	
 	@FXML
@@ -84,10 +90,7 @@ public class ScrabbleBabble  extends Application implements Initializable {
 	@FXML
 	public Label tiles_label;
 	
-	@FXML
-	public StackPane[][] tile_images;
-	@FXML
-	public ImageView[][] tile_images_IMG_child;
+	public static final DataFormat tilesFormat = new DataFormat("scrabblebabble.tile");
 	
 	public static void main(String[] args) {
 		board = new Board();
@@ -131,6 +134,8 @@ public class ScrabbleBabble  extends Application implements Initializable {
 			}
 		});
 		
+		
+		
 	}
 	
 	/** 
@@ -142,23 +147,30 @@ public class ScrabbleBabble  extends Application implements Initializable {
 		turn_handler.numPlayers = numPlayersIn;
 		turn_handler.turnCount = 0;
 		turn_handler.currentPlayer = 0;
-		tile_bag.randomize();
+		tile_bag.initBag();
 		 
 		for (int i = 0; i < turn_handler.numPlayers; i++) {
 			Player p = new Player(i);
 			turn_handler.players[i] = p;
 		}
 		turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
-		File aImage = new File(System.getProperty("user.dir") + "/letters/a.png");
-		Image I = new Image(aImage.toURI().toString());
-		tile_images_IMG_child[0][0].setImage(I);
-	    
+		
+		tiles_organizer.add(tile_bag.drawRandom().getRenderPane(), 1, 1);
+
+		ScrabbleBabble.instance.updateHand(turn_handler.getCurrentPlayer());
 		 
 	}
 
 	
-	public void clickDragDown() {
+	public void onDragDetected(MouseEvent e) {
 		
+	}
+
+	public void updateHand(Player p) {
+		for (int i = 0; i < p.hand.content.size(); i++) {
+			hand_organizer.getChildren().add(p.hand.content.get(0).getRenderPane());
+		}
+				
 	}
 	
 	
