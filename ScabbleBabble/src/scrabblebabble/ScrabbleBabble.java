@@ -21,10 +21,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import scrabblebabble.board.Board;
+import scrabblebabble.turn.TurnHandler;
 
 public class ScrabbleBabble  extends Application implements Initializable {
 
 	public static Board board;
+	public static TurnHandler turn_handler = new TurnHandler();
+	
 	
 	@FXML
 	public Button game_options_1;
@@ -92,7 +95,7 @@ public class ScrabbleBabble  extends Application implements Initializable {
 		game_options_1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+				turn_handler.newGame(2);
 			}
 		});
 

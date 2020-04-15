@@ -4,20 +4,31 @@ import scrabblebabble.game.Player;
 
 public class TurnHandler {
 
-	private int currenPlayer;
+	
+	private int currentPlayer = 0;
 	public int turnCount;
 	public int numPlayers;
 	
+	public Player[] players;
 	
-	public static void nextTurnCycle() {
+	public void nextTurnCycle() {
+		if (currentPlayer >= numPlayers) {
+			currentPlayer = 0;
+		} else {
+			currentPlayer++;
+		}
 		
 	}
 	
-	public static void newGame() {
-		
+	public void newGame(int numPlayersIn) {
+		 players = new Player[numPlayersIn];
+		 numPlayers = numPlayersIn;
+		 turnCount = 0;
+		 currentPlayer = 0;
+		 
 	}
 	
-	public static Player getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return null;
 	}
 	
