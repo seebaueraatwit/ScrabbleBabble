@@ -1,5 +1,6 @@
 package scrabblebabble;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -21,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import scrabblebabble.board.Board;
+import scrabblebabble.game.Player;
 import scrabblebabble.game.TileBag;
 import scrabblebabble.turn.TurnHandler;
 
@@ -81,14 +84,17 @@ public class ScrabbleBabble  extends Application implements Initializable {
 	@FXML
 	public Label tiles_label;
 	
-	public StackPane tilePrefab;
+	@FXML
+	public StackPane[][] tile_images;
+	@FXML
+	public ImageView[][] tile_images_IMG_child;
 	
 	public static void main(String[] args) {
 		board = new Board();
-		turn_handler = new TurnHandler();
 		tile_bag = new TileBag();
-		launch(args);
 		instance = new ScrabbleBabble();
+		turn_handler = new TurnHandler();
+		launch(args);
 	}
 	
 	public ScrabbleBabble() {
@@ -100,6 +106,10 @@ public class ScrabbleBabble  extends Application implements Initializable {
 		final FXMLLoader loader = new FXMLLoader(getClass().getResource("/scrabblebabble/ScrabbleBabble.fxml"));
 		final Pane p = loader.load();
 		
+//		tilePrefab = new StackPane();
+//		ImageView i = new ImageView();
+//		tilePrefab.getChildren().add(i);
+		
 		s.setScene(new Scene(p));
 		s.show();		
 	}
@@ -109,7 +119,7 @@ public class ScrabbleBabble  extends Application implements Initializable {
 		game_options_1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				turn_handler.newGame(2);
+				newGame(2);
 			}
 		});
 
@@ -117,11 +127,39 @@ public class ScrabbleBabble  extends Application implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				turn_handler.nextTurnCycle();
+				turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1) + " | (" + turn_handler.currentPlayer + ")");
 			}
 		});
 		
 	}
+	
+	/** 
+	 * starts a new game
+	 * @param numPlayersIn
+	 */
+	public void newGame(int numPlayersIn) {
+		turn_handler.players = new Player[numPlayersIn];
+		turn_handler.numPlayers = numPlayersIn;
+		turn_handler.turnCount = 0;
+		turn_handler.currentPlayer = 0;
+		tile_bag.randomize();
+		 
+		for (int i = 0; i < turn_handler.numPlayers; i++) {
+			Player p = new Player(i);
+			turn_handler.players[i] = p;
+		}
+		turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
+		File aImage = new File(System.getProperty("user.dir") + "/letters/a.png");
+		Image I = new Image(aImage.toURI().toString());
+		tile_images_IMG_child[0][0].setImage(I);
+	    
+		 
+	}
 
+	
+	public void clickDragDown() {
+		
+	}
 	
 	
 }
