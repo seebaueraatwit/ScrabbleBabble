@@ -92,7 +92,7 @@ public class ScrabbleBabble  extends Application implements Initializable {
 		game_options_1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-			
+				
 			}
 		});
 
