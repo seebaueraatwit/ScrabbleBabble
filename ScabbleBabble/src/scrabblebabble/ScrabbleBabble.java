@@ -21,19 +21,22 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import scrabblebabble.board.Board;
+import scrabblebabble.game.TileBag;
 import scrabblebabble.turn.TurnHandler;
 
 public class ScrabbleBabble  extends Application implements Initializable {
 
 	public static Board board;
-	public static TurnHandler turn_handler = new TurnHandler();
+	public static TurnHandler turn_handler;
+	public static TileBag tile_bag;
+	
+	public static ScrabbleBabble instance;
 	
 	
 	@FXML
 	public Button game_options_1;
-	
 	@FXML
-	public Label scores_label;
+	public Label turn_label;
 	
 	@FXML
 	public ToolBar toolbar1;
@@ -73,17 +76,28 @@ public class ScrabbleBabble  extends Application implements Initializable {
 	public StackPane right_stack;
 	@FXML
 	public Label info_label;
+	@FXML
+	public Label scores_label;
+	@FXML
+	public Label tiles_label;
 	
 	public StackPane tilePrefab;
 	
 	public static void main(String[] args) {
 		board = new Board();
+		turn_handler = new TurnHandler();
+		tile_bag = new TileBag();
 		launch(args);
+		instance = new ScrabbleBabble();
+	}
+	
+	public ScrabbleBabble() {
+		
 	}
 	
 	@Override
 	public void start(Stage s) throws Exception {
-		final FXMLLoader loader = new FXMLLoader(getClass().getResource("ScabbleBabble.fxml"));
+		final FXMLLoader loader = new FXMLLoader(getClass().getResource("/scrabblebabble/ScrabbleBabble.fxml"));
 		final Pane p = loader.load();
 		
 		s.setScene(new Scene(p));
@@ -99,7 +113,12 @@ public class ScrabbleBabble  extends Application implements Initializable {
 			}
 		});
 
-		
+		pass_button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				turn_handler.nextTurnCycle();
+			}
+		});
 		
 	}
 
