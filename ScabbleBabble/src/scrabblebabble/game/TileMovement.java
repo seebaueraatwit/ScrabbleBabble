@@ -3,6 +3,8 @@ package scrabblebabble.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import scrabblebabble.ScrabbleBabble;
+
 /*
  * Covers all tile movement for this program
  */
@@ -10,7 +12,7 @@ import java.util.Random;
 public class TileMovement {
 	
      //remove and replace with calls to hand class within activeplayer called from TurnHandler
-	 ArrayList<Player> playerHand = new ArrayList<Player>();
+//	 ArrayList<Player> playerHand = new ArrayList<Player>();
 	 
 	 //letter NEEDS TO BE CHANGED BUT CANT FIGURE OUT HOW TO CALL FROM OTHER CLASS
 	 //LetterTile class has this property, call <LetterTile>.getLetter(); from whatever letter you need.
@@ -21,7 +23,9 @@ public class TileMovement {
 	 * Places tile from hand to board
 	 */
 	
-	public void placeTile (int column, int row, int number) {
+	
+	public void placeTile (int column, int row, LetterTile t) {
+		ScrabbleBabble.board.setTile(row, column, t);
 //		 if(row<0||row>15||column<0||column>15) {
 //			    return;
 //		 }
@@ -53,6 +57,7 @@ public class TileMovement {
 //		}
 	}
 	
+	@Deprecated
 	public int randomTile(int max) {
 		Random r= new Random();
 		return r.nextInt(max);

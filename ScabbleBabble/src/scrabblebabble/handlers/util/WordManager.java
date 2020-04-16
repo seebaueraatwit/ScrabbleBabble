@@ -5,6 +5,18 @@ import scrabblebabble.game.LetterTile;
 
 public class WordManager {
 
+	public void updateScoreboard() {
+		
+	}
+	
+	public int calcScore() {
+		return 0;		
+	}
+	
+	public void checkChanges() {
+		
+	}
+	
 	/**
 	 * returns the score from an array of tiles gathered
 	 * 

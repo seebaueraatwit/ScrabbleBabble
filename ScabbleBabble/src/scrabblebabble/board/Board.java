@@ -2,10 +2,9 @@ package scrabblebabble.board;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Scanner;
 
+import scrabblebabble.game.LetterTile;
 import scrabblebabble.handlers.util.EnumEffect;
 
 public class Board {
@@ -96,5 +95,15 @@ public class Board {
 				return EnumEffect.EMPTY;
 		
 		}
+	}
+	
+	/**
+	 * Set a tile in the board from externally
+	 * @param x
+	 * @param y
+	 * @param t
+	 */
+	public void setTile(int x, int y, LetterTile t) {
+		grid[y][x].occupant = t;
 	}
 }
