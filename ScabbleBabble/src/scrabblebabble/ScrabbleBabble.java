@@ -1,6 +1,7 @@
 package scrabblebabble;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
@@ -15,8 +16,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -151,9 +155,36 @@ public class ScrabbleBabble extends Application implements Initializable {
 		
 	}
 
-	
+	/**
+	 * eventhandler for the drag and drop of tiles
+	 * @param e
+	 */
 	public void onDragDetected(MouseEvent e) {
+		Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);
 		
+		ArrayList<Object> a = new ArrayList<Object>();
+		a.add(x);
+		a.add(y);
+//		a.add(xdest);
+//		a.add(ydest);
+//		a.add(LetteTile b);
+		ClipboardContent content = new ClipboardContent();
+		content.put(tilesFormat, a);
+		db.setContent(content);
+        
+        e.consume();
+		
+	}
+	
+	/**
+	 * Eventhandler for followup of drag and drop tiles
+	 * 
+	 * use the start of drag 
+	 * @param e
+	 */
+	public void onDragStop(MouseEvent e) {
+			
+	
 	}
 
 	public void updateHand(Player p) {
