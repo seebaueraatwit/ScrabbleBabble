@@ -15,11 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -27,11 +24,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import scrabblebabble.board.Board;
+import scrabblebabble.game.LetterTile;
 import scrabblebabble.game.Player;
 import scrabblebabble.game.TileBag;
 import scrabblebabble.turn.TurnHandler;
 
-public class ScrabbleBabble  extends Application implements Initializable {
+public class ScrabbleBabble extends Application implements Initializable {
 
 	public static Board board;
 	public static TurnHandler turn_handler;
@@ -42,53 +40,34 @@ public class ScrabbleBabble  extends Application implements Initializable {
 	public static Node dragging;
 	
 	
-	@FXML
-	public Button game_options_1;
-	@FXML
-	public Label turn_label;
+	@FXML public Button game_options_1;
+	@FXML public Label turn_label;
 	
-	@FXML
-	public ToolBar toolbar1;
+	@FXML public ToolBar toolbar1;
 	
-	@FXML
-	public BorderPane main_layout;
+	@FXML public BorderPane main_layout;
 	
-	@FXML
-	public StackPane center_stack;
-	@FXML
-	public GridPane tiles_organizer;
+	@FXML public StackPane center_stack;
+	@FXML public GridPane tiles_organizer;
 	
-	@FXML
-	public StackPane bottom_stack;
-	@FXML
-	public FlowPane bottom_flow;
-	@FXML
-	public FlowPane hand_organizer;
-	@FXML
-	public StackPane hand_stack;
+	@FXML public StackPane bottom_stack;
+	@FXML public FlowPane bottom_flow;
+	@FXML public FlowPane hand_organizer;
+		  public StackPane[] hand_containers = new StackPane[7];
+	@FXML public StackPane hand_stack;
 	
-	@FXML
-	public StackPane left_stack;
-	@FXML
-	public FlowPane left_organizer;
+	@FXML public StackPane left_stack;
+	@FXML public FlowPane left_organizer;
 
-	@FXML
-	public ImageView scores_background;
-	@FXML
-	public ImageView tiles_background;
-	@FXML
-	public ImageView hand_background;
-	@FXML
-	public Button pass_button;
+	@FXML public ImageView scores_background;
+	@FXML public ImageView tiles_background;
+	@FXML public ImageView hand_background;
+	@FXML public Button pass_button;
 	
-	@FXML
-	public StackPane right_stack;
-	@FXML
-	public Label info_label;
-	@FXML
-	public Label scores_label;
-	@FXML
-	public Label tiles_label;
+	@FXML public StackPane right_stack;
+	@FXML public Label info_label;
+	@FXML public Label scores_label;
+	@FXML public Label tiles_label;
 	
 	public static final DataFormat tilesFormat = new DataFormat("scrabblebabble.tile");
 	
@@ -113,6 +92,8 @@ public class ScrabbleBabble  extends Application implements Initializable {
 //		ImageView i = new ImageView();
 //		tilePrefab.getChildren().add(i);
 		
+		
+		
 		s.setScene(new Scene(p));
 		s.show();		
 	}
@@ -123,6 +104,7 @@ public class ScrabbleBabble  extends Application implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				newGame(2);
+				updateHand(turn_handler.getCurrentPlayer());
 			}
 		});
 
@@ -134,7 +116,13 @@ public class ScrabbleBabble  extends Application implements Initializable {
 			}
 		});
 		
-		
+		// Load holders for the tile in the hand
+		for (int i = 0; i < 7; i++) {
+			StackPane sp = new StackPane();
+			sp.setPrefSize(101, 101);
+			hand_containers[i] = sp;
+			hand_organizer.getChildren().add(i, sp);
+		}
 		
 	}
 	
@@ -152,13 +140,15 @@ public class ScrabbleBabble  extends Application implements Initializable {
 		for (int i = 0; i < turn_handler.numPlayers; i++) {
 			Player p = new Player(i);
 			turn_handler.players[i] = p;
+			System.out.println(p.toString());
 		}
 		turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
 		
 		tiles_organizer.add(tile_bag.drawRandom().getRenderPane(), 1, 1);
 
-		ScrabbleBabble.instance.updateHand(turn_handler.getCurrentPlayer());
+		
 		 
+		
 	}
 
 	
@@ -168,9 +158,11 @@ public class ScrabbleBabble  extends Application implements Initializable {
 
 	public void updateHand(Player p) {
 		for (int i = 0; i < p.hand.content.size(); i++) {
-			hand_organizer.getChildren().add(p.hand.content.get(0).getRenderPane());
+			LetterTile l = p.hand.content.get(i);
+			System.out.println(l.toString());
+			Node n = l.getRenderPane();
+			hand_containers[i].getChildren().add(n);
 		}
-				
 	}
 	
 	

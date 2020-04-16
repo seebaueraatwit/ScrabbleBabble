@@ -21,17 +21,17 @@ public class TileMovement {
 	 */
 	
 	public void placeTile (int column, int row, int number) {
-		 if(row<0||row>15||column<0||column>15) {
-			    return;
-		 }
-		 
-		 //to get board, call ScrabbleBabble.board.<>
-		 if(Board[row][column]==' ') {
-			 //use the <Hand> object described above
-			 if(playerHand.get(number)!=' ') {
-				 
-			 }
-		 }
+//		 if(row<0||row>15||column<0||column>15) {
+//			    return;
+//		 }
+//		 
+//		 //to get board, call ScrabbleBabble.board.<>
+//		 if(Board[row][column]==' ') {
+//			 //use the <Hand> object described above
+//			 if(playerHand.get(number)!=' ') {
+//				 
+//			 }
+//		 }
 	}
 	
 	/*
@@ -43,13 +43,13 @@ public class TileMovement {
 	 * It will help understanding of the system
 	 */
 	public void moveToHand() {
-		for(int i=0; i<playerHand.size(); i++) {
-			while(playerHand.size()!=7) {
-				int random=randomTile(letter.size());
-				playerHand.add(letter.get(random));
-				letter.remove(random);
-			}
-		}
+//		for(int i=0; i<playerHand.size(); i++) {
+//			while(playerHand.size()!=7) {
+//				int random=randomTile(letter.size());
+//				playerHand.add(letter.get(random));
+//				letter.remove(random);
+//			}
+//		}
 	}
 	
 	public int randomTile(int max) {

@@ -7,7 +7,11 @@ import scrabblebabble.ScrabbleBabble;
 
 public class Hand {
 
-	public ArrayList<LetterTile> content = new ArrayList<LetterTile>(7);
+	public ArrayList<LetterTile> content;
+	
+	public Hand() {
+		content = new ArrayList<LetterTile>(7);
+	}
 	
 	
 	/**
@@ -15,7 +19,9 @@ public class Hand {
 	 */
 	public void applyRandom() {
 		// TODO
-		content.add(ScrabbleBabble.tile_bag.drawRandom());
+		for (int i = 0; i < 7; i++ ) {
+			content.add(i, ScrabbleBabble.tile_bag.drawRandom());
+		}
 		System.out.println("RANDOMIZED HAND");
 	}
 	

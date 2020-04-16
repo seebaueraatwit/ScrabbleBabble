@@ -47,11 +47,11 @@ public class LetterTile {
 		
 		this.renderingPane.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent event) {
-		        /* drag was detected, start a drag-and-drop gesture*/
-		        /* allow any transfer mode */
+		        //drag was detected, start a dragdrop
+		        // allow any transfer mode
 		        Dragboard db = renderingPane.startDragAndDrop(TransferMode.ANY);
 		        
-		        /* Put a string on a dragboard */
+		        // Put a string on a dragboard
 		        ClipboardContent content = new ClipboardContent();
 		        
 		        //TODO BIGGGGG TODO ================================================
@@ -89,5 +89,10 @@ public class LetterTile {
 	
 	public String getLetter() {
 		return letter.letter();
+	}
+	
+	@Override
+	public String toString() {
+		return "\'" + getLetter() + "\'";
 	}
 }
