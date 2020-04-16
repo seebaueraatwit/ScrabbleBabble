@@ -8,9 +8,12 @@ import java.util.Random;
  */
 public class TileMovement {
 	
+     //remove and replace with calls to hand class within activeplayer called from TurnHandler
 	 ArrayList<Player> playerHand = new ArrayList<Player>();
 	 
 	 //letter NEEDS TO BE CHANGED BUT CANT FIGURE OUT HOW TO CALL FROM OTHER CLASS
+	 //LetterTile class has this property, call <LetterTile>.getLetter(); from whatever letter you need.
+	 //ideally move the LetterTile instances around.
 	 ArrayList<Character> letter = new ArrayList<Character>();
 	 
 	/*
@@ -22,7 +25,9 @@ public class TileMovement {
 			    return;
 		 }
 		 
+		 //to get board, call ScrabbleBabble.board.<>
 		 if(Board[row][column]==' ') {
+			 //use the <Hand> object described above
 			 if(playerHand.get(number)!=' ') {
 				 
 			 }
@@ -33,6 +38,10 @@ public class TileMovement {
 	 * Refills player's hand whenever there is less seven tiles in the players hand
 	 */
 	
+	/**
+	 * Check out Hand.java for a few methods regarding this. Treat the tiles as objects rather than letters
+	 * It will help understanding of the system
+	 */
 	public void moveToHand() {
 		for(int i=0; i<playerHand.size(); i++) {
 			while(playerHand.size()!=7) {

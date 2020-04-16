@@ -84,7 +84,19 @@
                               <Image url="@../../hand.png" />
                            </image>
                         </ImageView>
-                        <FlowPane fx:id="hand_organizer" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" rowValignment="BOTTOM" />
+                        <FlowPane fx:id="hand_organizer" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" rowValignment="BOTTOM">
+                           <children>
+                              <StackPane prefHeight="102.0" prefWidth="102.0">
+                                 <children>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../letters/b.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </FlowPane>
                      </children>
                   </StackPane>
                </children>
