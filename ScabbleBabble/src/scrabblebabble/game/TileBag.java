@@ -26,7 +26,7 @@ public class TileBag {
 		for (int i = 0; i < 27; i++) {
 			EnumLetter current = EnumLetter.getById(i);
 			for (int j = 0; j < current.quantity() * 4; j++) {
-				tiles.add(ScrabbleBabble.instance.getGeneratedTilePane(new LetterTile(current, i * 100 + j)));
+				tiles.add(ScrabbleBabble.instance.getGeneratedTilePane(current, i * 100 + j));
 			}
 		}
 		

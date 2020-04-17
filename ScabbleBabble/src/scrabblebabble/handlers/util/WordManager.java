@@ -28,7 +28,7 @@ public class WordManager {
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				TilePane t = (TilePane) Board.getNodeByRowColumnIndex(i, j, gridnew);
-				e[i][j] = t.held.letter;
+				e[i][j] = t.letter;
 			}
 		}
 		return e;
@@ -146,7 +146,7 @@ public class WordManager {
 			EnumLetter[] out = new EnumLetter[end - start];
 			for (int j = 0; j < ScrabbleBabble.board.grid[rowCol].length; j++) {
 				if (j >= start && j <= end) {
-					out[j-start] = ScrabbleBabble.board.grid[rowCol][j].occupant.held.letter;			
+					out[j-start] = ScrabbleBabble.board.grid[rowCol][j].occupant.letter;			
 				}
 			}
 			return out;
@@ -154,7 +154,7 @@ public class WordManager {
 			EnumLetter[] out = new EnumLetter[end - start];
 			for (int j = 0; j < ScrabbleBabble.board.grid.length; j++) {
 				if (j >= start && j <= end) {
-					out[j-start] = ScrabbleBabble.board.grid[j][rowCol].occupant.held.letter;			
+					out[j-start] = ScrabbleBabble.board.grid[j][rowCol].occupant.letter;			
 				}
 			}
 			return out;

@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import scrabblebabble.ScrabbleBabble;
 import scrabblebabble.handlers.util.EnumEffect;
 import scrabblebabble.render.TilePane;
@@ -120,7 +120,7 @@ public class Board {
 	 * @param xend
 	 * @param yend
 	 */
-	public void moveToFrom(int handfrom, int xstart, int ystart, int handto, int xend, int yend, GridPane grid) {
+	public void moveToFrom(int handfrom, int xstart, int ystart, int handto, int xend, int yend, GridPane grid, StackPane[] handPanes) {
 		//TODO
 		
 		TilePane from;
@@ -133,41 +133,43 @@ public class Board {
 		
 		//get to swap
 		if(handfrom == -1) {
-			from = (TilePane) removeNodeByRowColumnIndex(xstart, ystart, grid);
-			System.out.println("1" + from.empty);
+			from = (TilePane) removeNodeByRowColumnIndex(ystart, xstart, grid);
+			System.out.println("1 | from:empty=" + from.empty);
 		} else {
 			from = (TilePane) ScrabbleBabble.turn_handler.getCurrentPlayer().hand.removeFromHand(handfrom);
-			System.out.println("2 " + from.empty);
+			System.out.println("2 | from:empty=" + from.empty);
 		}
 
 		if(handto == -1) {
-			to = (TilePane) removeNodeByRowColumnIndex(xend, yend, grid);
-			System.out.println("3 " + to.empty);
+			to = (TilePane) removeNodeByRowColumnIndex(yend, xend, grid);
+			System.out.println("3 | to:empty=" + to.empty);
 		} else {
 			to = (TilePane) ScrabbleBabble.turn_handler.getCurrentPlayer().hand.removeFromHand(handto);
-			System.out.println("4 " + to.empty);
+			System.out.println("4 | to:empty=" + to.empty);
 		}
 		
 
 		//swap
-		if(handfrom != -1) {
+		if(handto == -1) {
 			ScrabbleBabble.board.moveTo(from, -1, xend, yend);
 			grid.add(from, xend, yend);
 			System.out.println("5");
 		} else {
 			ScrabbleBabble.board.moveTo(from, handto, 0, 0);
-			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.content.set(handto, (TilePane) from);
+			ScrabbleBabble.board.moveToHand(from, handto, handPanes);
+			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.placeInHand(from, handto);
 			System.out.println("6");
 		}
 
 		
-		if(handto != -1) {
+		if(handfrom == -1) {
 			ScrabbleBabble.board.moveTo(to, -1, xstart, ystart);
 			grid.add(to, xstart, ystart);
 			System.out.println("7");
 		} else {
 			ScrabbleBabble.board.moveTo(to, handfrom, 0, 0);
-			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.content.set(handfrom, (TilePane) to);
+			ScrabbleBabble.board.moveToHand(to, handfrom, handPanes);
+			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.placeInHand(to, handfrom);;
 			System.out.println("8");
 		}
 		
@@ -180,10 +182,23 @@ public class Board {
 	 * @param xto
 	 * @param yto
 	 */
-	public void moveTo(TilePane tIn, int handto, int xto, int yto) {
-		tIn.x = xto;
-		tIn.y = yto;
+	public void moveTo(TilePane tIn, int handto, int rowto, int colto) {
+		tIn.x = rowto;
+		tIn.y = colto;
 		tIn.handIndex = handto;
+	}
+	
+	/**
+	 * sets the TilePane into the active hand, used by gridmovement
+	 * @param tIn
+	 * @param handto
+	 */
+	public void moveToHand(TilePane tIn, int handto, StackPane[] sIn) {
+		if(handto != -1) {
+			sIn[handto].getChildren().clear();
+			sIn[handto].getChildren().add(tIn);
+			System.out.println("Hand");
+		}
 	}
 	
 	/**

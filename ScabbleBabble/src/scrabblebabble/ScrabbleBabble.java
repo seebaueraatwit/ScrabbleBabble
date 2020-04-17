@@ -30,11 +30,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import scrabblebabble.board.Board;
-import scrabblebabble.game.LetterTile;
 import scrabblebabble.game.Player;
 import scrabblebabble.game.TileBag;
+import scrabblebabble.handlers.util.EnumLetter;
 import scrabblebabble.render.TilePane;
 import scrabblebabble.turn.TurnHandler;
 
@@ -83,8 +85,8 @@ public class ScrabbleBabble extends Application implements Initializable {
 	public static void main(String[] args) {
 		instance = new ScrabbleBabble();
 		board = new Board();
-		tile_bag = new TileBag();
 		turn_handler = new TurnHandler();
+		tile_bag = new TileBag();
 		launch(args);
 	}
 	
@@ -128,7 +130,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		// Add blank TilePanes into the gridpane for temporary null
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				TilePane p = getGeneratedTilePane(null);
+				TilePane p = getGeneratedTilePane(null, -1);
 				board.moveTo(p, -1, i, j);
 				tiles_organizer.add(p, i, j);
 				// LetterTile.getGeneratedTilePane(null)
@@ -181,22 +183,29 @@ public class ScrabbleBabble extends Application implements Initializable {
 		}
 	}
 	
-	public TilePane getGeneratedTilePane(LetterTile tIn) {
-		TilePane p = new TilePane(tIn);
-		if (tIn != null) {
-			File aImage = new File(System.getProperty("user.dir") + "/letters/" + tIn.getLetter().toLowerCase() + ".png");
+	public TilePane getGeneratedTilePane(EnumLetter letterIn, int idIn) {
+		TilePane p = new TilePane(letterIn, idIn);
+		if (letterIn != null) {
+			File aImage = new File(System.getProperty("user.dir") + "/letters/" + letterIn.letter().toLowerCase() + ".png");
 			Image renderingImage = new Image(aImage.toURI().toString());
 			ImageView renderingView = new ImageView(renderingImage);
 			renderingView.setFitHeight(45);
 			renderingView.setFitWidth(45);
 			p.getChildren().add(renderingView);
 		}
+		// DEBUG RECTANGLE
+//		Rectangle r = new Rectangle();
+//		r.setWidth(30.0);
+//		r.setHeight(30.0);
+//		r.setFill(Color.GREEN);
+		
+//		p.getChildren().add(r);
 		p.setAlignment(Pos.CENTER);		
 		
 		p.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent e) {
 		    	Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);
-				if (p.held != null) {
+				if (p.letter != null) {
 					ArrayList<Integer> a = new ArrayList<Integer>(); 
 									
 					a.add(p.x);
@@ -205,6 +214,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 
 					ClipboardContent content = new ClipboardContent();
 					content.put(ScrabbleBabble.tilesFormat, a);
+					System.out.println("Strart Drag: (" + p.x + ", " + p.y + ", " + p.handIndex + ")");
 					db.setContent(content);
 					
 				}
@@ -242,6 +252,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		    	Dragboard db = e.getDragboard();
 		        boolean success = false;
 		        ArrayList<Integer> dragged;
+		        System.out.println("Attempting drop");
 		        //check for content, mostly always true
 		    	if (db.hasContent(ScrabbleBabble.tilesFormat)) {
 		    		success = true;
@@ -254,7 +265,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		    		int xto = p.x;
 		    		int yto = p.y;
 		    		int handto = p.handIndex;
-		    		ScrabbleBabble.board.moveToFrom(handFrom, xfrom, yfrom, handto, xto, yto, tiles_organizer);
+		    		ScrabbleBabble.board.moveToFrom(handFrom, xfrom, yfrom, handto, xto, yto, tiles_organizer, hand_containers);
 		    		//ScrabbleBabble.instance.updateHand(ScrabbleBabble.turn_handler.getCurrentPlayer());
 		    		System.out.println("Start Drag: (" + xfrom + ", " + yfrom + ", " + handFrom + ")");
 		    		System.out.println("End Drag: (" + xto + ", " + yto + ", " + handto + ")");
@@ -271,7 +282,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		    	 
 		        if (modeUsed == TransferMode.MOVE) 
 		        {
-		        	
+		        	System.out.println("Done");
 		        }
 		    	e.consume();
 		    }
