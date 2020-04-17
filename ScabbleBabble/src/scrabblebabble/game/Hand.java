@@ -1,16 +1,16 @@
 package scrabblebabble.game;
 
 import java.util.ArrayList;
-import java.util.Deque;
 
 import scrabblebabble.ScrabbleBabble;
+import scrabblebabble.render.TilePane;
 
 public class Hand {
 
-	public ArrayList<LetterTile> content;
+	public ArrayList<TilePane> content;
 	
 	public Hand() {
-		content = new ArrayList<LetterTile>(7);
+		content = new ArrayList<TilePane>(7);
 	}
 	
 	
@@ -20,7 +20,7 @@ public class Hand {
 	public void applyRandom() {
 		// TODO
 		for (int i = 0; i < 7; i++ ) {
-			content.add(i, ScrabbleBabble.tile_bag.drawRandom());
+			content.add(i, ScrabbleBabble.tile_bag.drawRandom(i));
 		}
 		System.out.println("RANDOMIZED HAND");
 	}

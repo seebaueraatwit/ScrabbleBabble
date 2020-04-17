@@ -1,30 +1,34 @@
 package scrabblebabble.game;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import scrabblebabble.ScrabbleBabble;
 import scrabblebabble.handlers.util.EnumLetter;
+import scrabblebabble.render.TilePane;
 
 public class LetterTile {
 
+	private Object object;
 	EnumLetter letter;
 	private final short uid;
 	
-	public StackPane renderingPane;
-	public ImageView renderingView;
-	public Image renderingImage;
+	public TilePane renderingPane;
 	
 	public int x;
 	public int y;
+	public int handIndex;
 	
 	public LetterTile(EnumLetter letterIn, int iIn) {
 		this.letter = letterIn;
@@ -37,41 +41,16 @@ public class LetterTile {
 	 * 
 	 */
 	private void loadImage() {
-		File aImage = new File(System.getProperty("user.dir") + "/letters/" + letter.letter().toLowerCase() + ".png");
-		this.renderingImage = new Image(aImage.toURI().toString());
-		this.renderingView = new ImageView(this.renderingImage);
-		this.renderingView.setFitHeight(45);
-		this.renderingView.setFitWidth(45);
-		this.renderingPane = new StackPane();
-		this.renderingPane.setAlignment(Pos.CENTER);
 		
-		this.renderingPane.setOnDragDetected(new EventHandler<MouseEvent>() {
-		    public void handle(MouseEvent event) {
-		        //drag was detected, start a dragdrop
-		        // allow any transfer mode
-		        Dragboard db = renderingPane.startDragAndDrop(TransferMode.ANY);
-		        
-		        // Put a string on a dragboard
-		        ClipboardContent content = new ClipboardContent();
-		        
-		        //TODO BIGGGGG TODO ================================================
-		        int[] coord = new int[] {x,y};
-		        content.put(ScrabbleBabble.tilesFormat, coord);
-		        db.setContent(content);
-		        //TODO BIGGGGG TODO  =================================================
-		        
-		        event.consume();
-		    }
-		});
+		this.renderingPane = getGeneratedTilePane(this);
 		
-		this.renderingPane.getChildren().add(this.renderingView);
 	}
 	
 	/**
 	 * gives the stackpane containing the image for this tile for rendering purpose
 	 * @return
 	 */
-	public StackPane getRenderPane() {
+	public TilePane getRenderPane() {
 		return this.renderingPane;
 	}
 	
@@ -94,5 +73,121 @@ public class LetterTile {
 	@Override
 	public String toString() {
 		return "\'" + getLetter() + "\'";
+	}
+	
+	public void setTilePosition(int xIn, int yIn, int handIn) {
+		this.x = xIn;
+		this.y = yIn;
+		this.handIndex = handIn;
+	}
+	
+	public static TilePane getGeneratedTilePane(LetterTile tIn) {
+		TilePane p = new TilePane(tIn);
+		if (tIn != null) {
+			File aImage = new File(System.getProperty("user.dir") + "/letters/" + tIn.getLetter().toLowerCase() + ".png");
+			Image renderingImage = new Image(aImage.toURI().toString());
+			ImageView renderingView = new ImageView(renderingImage);
+			renderingView.setFitHeight(45);
+			renderingView.setFitWidth(45);
+			p.getChildren().add(renderingView);
+		}
+		p.setAlignment(Pos.CENTER);		
+		p.setOnDragDetected(new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent e) {
+		    	Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);
+				if (p.held != null) {
+					ArrayList<Integer> a = new ArrayList<Integer>(); 
+//					a.add(xdest);
+//					a.add(ydest);
+//					a.add(LetteTile b);
+					
+					int x = 0;
+					int y = 0;
+					int isHand = -1;
+					
+					if (true) {
+						isHand = p.held.handIndex;
+						x = p.held.x;
+						y = p.held.y;
+					}
+					
+					a.add(x);
+					a.add(y);
+					a.add(isHand);
+
+
+					ClipboardContent content = new ClipboardContent();
+					content.put(ScrabbleBabble.tilesFormat, a);
+					db.setContent(content);
+					
+					System.out.println("Started Drag");
+				}
+		        e.consume();
+		    }
+		});
+		
+		p.setOnDragOver(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent e) {
+		    	if (e.getGestureSource() != p) {
+		            e.acceptTransferModes(TransferMode.ANY);
+		        }
+
+				System.out.println("Dragging");
+				
+		        e.consume();
+		    }
+		});
+		
+		p.setOnDragEntered(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent event) {
+		    
+		         event.consume();
+		    }
+		});
+		
+		p.setOnDragExited(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent event) {
+		    
+		         event.consume();
+		    }
+		});
+		
+		p.setOnDragDropped(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent e) {
+		    	Dragboard db = e.getDragboard();
+		        boolean success = false;
+		        System.out.println("onDragDrop fired");
+		        ArrayList<Integer> dragged;
+		    	if (db.hasContent(ScrabbleBabble.tilesFormat)) {
+		    		success = true;
+		    		dragged = (ArrayList<Integer>) db.getContent(ScrabbleBabble.tilesFormat);
+		    		int xfrom = dragged.get(0);
+		    		int yfrom = dragged.get(1);
+		    		int handFrom = dragged.get(2);
+		    		int xto;
+		    		int yto;
+		    		int handto;
+		    		ScrabbleBabble.board.moveToFrom(handFrom, xfrom, yfrom, p.held.x, p.held.y, p.held.handIndex);
+		    		System.out.println("End Drag: " + xfrom + yfrom + handFrom + p.held.x + p.held.y + p.held.handIndex);
+		    	}
+		    	
+		        e.setDropCompleted(success);
+		        e.consume();
+		    }
+		});
+		
+		p.setOnDragDone(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent e) {
+		    	TransferMode modeUsed = e.getTransferMode();
+		    	 
+		        if (modeUsed == TransferMode.MOVE) 
+		        {
+		        	System.out.println("Done");
+		        }
+		    	e.consume();
+		    }
+		});
+		
+		return p;
 	}
 }

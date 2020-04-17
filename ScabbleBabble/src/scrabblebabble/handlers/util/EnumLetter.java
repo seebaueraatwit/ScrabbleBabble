@@ -66,7 +66,7 @@ public enum EnumLetter {
 	 * @param idIn
 	 * @return
 	 */
-	public EnumLetter getById(int idIn) {
+	public static EnumLetter getById(int idIn) {
 		for (EnumLetter e : EnumLetter.values()) {
 			if (e.id() == idIn) {
 				return e;
@@ -82,7 +82,7 @@ public enum EnumLetter {
 	 * @param letterIn
 	 * @return
 	 */
-	public EnumLetter getByLetter(String letterIn) {
+	public static EnumLetter getByLetter(String letterIn) {
 		for (EnumLetter e : EnumLetter.values()) {
 			if (e.letter() == letterIn) {
 				return e;

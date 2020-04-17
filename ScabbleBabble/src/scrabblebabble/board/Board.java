@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import scrabblebabble.game.LetterTile;
 import scrabblebabble.handlers.util.EnumEffect;
+import scrabblebabble.render.TilePane;
 
 public class Board {
 
@@ -19,7 +19,7 @@ public class Board {
 		Fill();
 	}
 	
-	//TODO
+	//
 	/**
 	 * Loads the tiles file and any other necesary loading files, subroutine of constructor
 	 */
@@ -103,7 +103,20 @@ public class Board {
 	 * @param y
 	 * @param t
 	 */
-	public void setTile(int x, int y, LetterTile t) {
+	public void setTile(int x, int y, TilePane t) {
 		grid[y][x].occupant = t;
+	}
+
+	/**
+	 * Moves a tile from given spot in either hand or board to another in the hand or board
+	 * @param hand
+	 * @param xfrom
+	 * @param yfrom
+	 * @param xto
+	 * @param yto
+	 */
+	public void moveToFrom(int hand, int xfrom, int yfrom, int handto, int xto, int yto) {
+		//TODO
+		System.out.println("Moved to new spot");
 	}
 }

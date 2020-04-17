@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -31,6 +33,7 @@ import scrabblebabble.board.Board;
 import scrabblebabble.game.LetterTile;
 import scrabblebabble.game.Player;
 import scrabblebabble.game.TileBag;
+import scrabblebabble.render.TilePane;
 import scrabblebabble.turn.TurnHandler;
 
 public class ScrabbleBabble extends Application implements Initializable {
@@ -120,6 +123,14 @@ public class ScrabbleBabble extends Application implements Initializable {
 			}
 		});
 		
+		// Add blank TilePanes into the gridpane for temporary null
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				tiles_organizer.add(tile_bag.drawRandom(-1), i, j);
+				// LetterTile.getGeneratedTilePane(null)
+			}
+		}
+		
 		// Load holders for the tile in the hand
 		for (int i = 0; i < 7; i++) {
 			StackPane sp = new StackPane();
@@ -148,46 +159,18 @@ public class ScrabbleBabble extends Application implements Initializable {
 		}
 		turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
 		
-		tiles_organizer.add(tile_bag.drawRandom().getRenderPane(), 1, 1);
+//		tiles_organizer.add(tile_bag.drawRandom().getRenderPane(), 1, 1);
 
 		
 		 
 		
 	}
-
-	/**
-	 * eventhandler for the drag and drop of tiles
-	 * @param e
-	 */
-	public void onDragDetected(MouseEvent e) {
-		Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);
-		
-		ArrayList<Object> a = new ArrayList<Object>();
-//		a.add(xdest);
-//		a.add(ydest);
-//		a.add(LetteTile b);
-		ClipboardContent content = new ClipboardContent();
-		content.put(tilesFormat, a);
-		db.setContent(content);
-        
-        e.consume();
-		
-	}
 	
-	/**
-	 * Eventhandler for followup of drag and drop tiles
-	 * 
-	 * use the start of drag 
-	 * @param e
-	 */
-	public void onDragStop(MouseEvent e) {
-		
 	
-	}
 
 	public void updateHand(Player p) {
 		for (int i = 0; i < p.hand.content.size(); i++) {
-			LetterTile l = p.hand.content.get(i);
+			LetterTile l = p.hand.content.get(i).held;
 			System.out.println(l.toString());
 			Node n = l.getRenderPane();
 			hand_containers[i].getChildren().add(n);

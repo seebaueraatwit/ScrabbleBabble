@@ -1,11 +1,11 @@
 package scrabblebabble.board;
 
-import scrabblebabble.game.LetterTile;
 import scrabblebabble.handlers.util.EnumEffect;
+import scrabblebabble.render.TilePane;
 
 public class BoardTile {
 
-	public LetterTile occupant;	
+	public TilePane occupant;	
 	public final EnumEffect effect;
 	
 	public final int x;
@@ -15,7 +15,7 @@ public class BoardTile {
 		this(xIn, yIn, null, EnumEffect.EMPTY);
 	}
 	
-	public BoardTile(int xIn, int yIn, LetterTile occIn, EnumEffect effIn) {
+	public BoardTile(int xIn, int yIn, TilePane occIn, EnumEffect effIn) {
 		this.occupant = null;
 		this.effect = effIn;
 		x = xIn;

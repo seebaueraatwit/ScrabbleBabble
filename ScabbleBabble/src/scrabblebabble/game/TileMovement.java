@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import scrabblebabble.ScrabbleBabble;
+import scrabblebabble.render.TilePane;
 
 /*
  * Covers all tile movement for this program
  */
+
 public class TileMovement {
 	
      //remove and replace with calls to hand class within activeplayer called from TurnHandler
@@ -23,7 +25,7 @@ public class TileMovement {
 	 */
 	
 	
-	public void placeTile (int column, int row, LetterTile t) {
+	public void placeTile (int column, int row, TilePane t) {
 		ScrabbleBabble.board.setTile(row, column, t);
 //		 if(row<0||row>15||column<0||column>15) {
 //			    return;
@@ -47,6 +49,8 @@ public class TileMovement {
 	 * It will help understanding of the system
 	 */
 	public void moveToHand() {
+		
+		
 //		for(int i=0; i<playerHand.size(); i++) {
 //			while(playerHand.size()!=7) {
 //				int random=randomTile(letter.size());

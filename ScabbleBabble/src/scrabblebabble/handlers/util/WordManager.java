@@ -59,7 +59,7 @@ public class WordManager {
 			LetterTile[] out = new LetterTile[end - start];
 			for (int j = 0; j < ScrabbleBabble.board.grid[rowCol].length; j++) {
 				if (j >= start && j <= end) {
-					out[j-start] = ScrabbleBabble.board.grid[rowCol][j].occupant;			
+					out[j-start] = ScrabbleBabble.board.grid[rowCol][j].occupant.held;			
 				}
 			}
 			return out;
@@ -67,7 +67,7 @@ public class WordManager {
 			LetterTile[] out = new LetterTile[end - start];
 			for (int j = 0; j < ScrabbleBabble.board.grid.length; j++) {
 				if (j >= start && j <= end) {
-					out[j-start] = ScrabbleBabble.board.grid[j][rowCol].occupant;			
+					out[j-start] = ScrabbleBabble.board.grid[j][rowCol].occupant.held;			
 				}
 			}
 			return out;
