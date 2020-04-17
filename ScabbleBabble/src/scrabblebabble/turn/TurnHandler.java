@@ -56,7 +56,7 @@ public class TurnHandler {
 	 * Ends the game, run when a player's hand is detected as empty.
 	 */
 	public boolean end(Label winner_label, Button pass_button) {
-		System.out.println("ENDING GAME");
+		//System.out.println("ENDING GAME");
 		pass_button.setDisable(true);
 		winner_label.setText("Player " + (currentPlayer + 1) + " Wins!!  With " + getCurrentPlayer().getScore() + "Points!!!");
 		return true;

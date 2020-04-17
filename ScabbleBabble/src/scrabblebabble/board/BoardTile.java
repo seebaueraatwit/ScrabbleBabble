@@ -32,7 +32,7 @@ public class BoardTile {
 	
 	public void used() {
 		this.used = true;
-		System.out.println("(" + x + "," + y + ") " + this.used);
+		//System.out.println("(" + x + "," + y + ") " + this.used);
 	}
 
 	public boolean isUsed() {

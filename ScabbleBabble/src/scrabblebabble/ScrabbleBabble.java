@@ -312,7 +312,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 
 					ClipboardContent content = new ClipboardContent();
 					content.put(ScrabbleBabble.tilesFormat, a);
-					System.out.println("Strart Drag: (" + p.x + ", " + p.y + ", " + p.handIndex + ")");
+					//System.out.println("Strart Drag: (" + p.x + ", " + p.y + ", " + p.handIndex + ")");
 					db.setContent(content);
 					
 				}
@@ -350,7 +350,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		    	Dragboard db = e.getDragboard();
 		        boolean success = false;
 		        ArrayList<Integer> dragged;
-		        System.out.println("Attempting drop");
+		        //System.out.println("Attempting drop");
 		        //check for content, mostly always true
 		    	if (db.hasContent(ScrabbleBabble.tilesFormat)) {
 		    		success = true;
@@ -365,8 +365,8 @@ public class ScrabbleBabble extends Application implements Initializable {
 		    		int handto = p.handIndex;
 		    		ScrabbleBabble.board.moveToFrom(handFrom, xfrom, yfrom, handto, xto, yto, tiles_organizer, hand_containers);
 		    		//ScrabbleBabble.instance.updateHand(ScrabbleBabble.turn_handler.getCurrentPlayer());
-		    		System.out.println("Start Drag: (" + xfrom + ", " + yfrom + ", " + handFrom + ")");
-		    		System.out.println("End Drag: (" + xto + ", " + yto + ", " + handto + ")");
+		    		//System.out.println("Start Drag: (" + xfrom + ", " + yfrom + ", " + handFrom + ")");
+		    		//System.out.println("End Drag: (" + xto + ", " + yto + ", " + handto + ")");
 		    	}
 		    	
 		        e.setDropCompleted(success);
@@ -380,7 +380,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		    	 
 		        if (modeUsed == TransferMode.MOVE) 
 		        {
-		        	System.out.println("Done");
+		        	//System.out.println("Done");
 		        }
 		    	e.consume();
 		    }

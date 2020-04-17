@@ -40,7 +40,7 @@ public class Board {
 				yF = scnr.nextInt();
 				bonF = scnr.next();
 				tileF = new BoardTile(xF, yF, null, parseBonus(bonF));
-				System.out.println("Loaded Tile from bonus File: " + tileF.toString());
+				//System.out.println("Loaded Tile from bonus File: " + tileF.toString());
 				grid[xF][yF] = tileF;
 			}
 		} catch (FileNotFoundException e) {
@@ -61,7 +61,7 @@ public class Board {
 				if (grid[i][j] == null) {
 					t = new BoardTile(i,j);
 					grid[i][j] = t;
-					System.out.println("Loaded Tile from bonus File: " + t.toString());
+					//System.out.println("Loaded Tile from bonus File: " + t.toString());
 					t = null;
 				}
 			}
@@ -121,8 +121,7 @@ public class Board {
 	 * @param yend
 	 */
 	public void moveToFrom(int handfrom, int xstart, int ystart, int handto, int xend, int yend, GridPane grid, StackPane[] handPanes) {
-		//TODO
-		
+				
 		TilePane from;
 		TilePane to;
 		
@@ -134,18 +133,18 @@ public class Board {
 		//get to swap
 		if(handfrom == -1) {
 			from = (TilePane) removeNodeByRowColumnIndex(ystart, xstart, grid);
-			System.out.println("1 | from:empty=" + from.empty);
+			//System.out.println("1 | from:empty=" + from.empty);
 		} else {
 			from = (TilePane) ScrabbleBabble.turn_handler.getCurrentPlayer().hand.removeFromHand(handfrom);
-			System.out.println("2 | from:empty=" + from.empty);
+			//System.out.println("2 | from:empty=" + from.empty);
 		}
 
 		if(handto == -1) {
 			to = (TilePane) removeNodeByRowColumnIndex(yend, xend, grid);
-			System.out.println("3 | to:empty=" + to.empty);
+			//System.out.println("3 | to:empty=" + to.empty);
 		} else {
 			to = (TilePane) ScrabbleBabble.turn_handler.getCurrentPlayer().hand.removeFromHand(handto);
-			System.out.println("4 | to:empty=" + to.empty);
+			//System.out.println("4 | to:empty=" + to.empty);
 		}
 		
 
@@ -153,27 +152,27 @@ public class Board {
 		if(handto == -1) {
 			ScrabbleBabble.board.moveTo(from, -1, xend, yend);
 			grid.add(from, xend, yend);
-			System.out.println("5");
+			//System.out.println("5");
 		} else {
 			ScrabbleBabble.board.moveTo(from, handto, 0, 0);
 			ScrabbleBabble.board.moveToHand(from, handto, handPanes);
 			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.placeInHand(from, handto);
-			System.out.println("6");
+			//System.out.println("6");
 		}
 
 		
 		if(handfrom == -1) {
 			ScrabbleBabble.board.moveTo(to, -1, xstart, ystart);
 			grid.add(to, xstart, ystart);
-			System.out.println("7");
+			//System.out.println("7");
 		} else {
 			ScrabbleBabble.board.moveTo(to, handfrom, 0, 0);
 			ScrabbleBabble.board.moveToHand(to, handfrom, handPanes);
 			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.placeInHand(to, handfrom);;
-			System.out.println("8");
+			//System.out.println("8");
 		}
 		
-		System.out.println("Moved to new spot");
+		//System.out.println("Moved to new spot");
 	}
 	
 	/**
@@ -197,7 +196,7 @@ public class Board {
 		if(handto != -1) {
 			sIn[handto].getChildren().clear();
 			sIn[handto].getChildren().add(tIn);
-			System.out.println("Hand");
+			//System.out.println("Hand");
 		}
 	}
 	

@@ -20,23 +20,21 @@ public class Hand {
 	 * grabs 7 random tiles from the bag, used on game start
 	 */
 	public void applyRandom() {
-		// TODO
+		
 		for (int i = 0; i < 7; i++ ) {
 			content.put(i, ScrabbleBabble.tile_bag.drawRandom(i));
 		}
-		System.out.println("RANDOMIZED HAND");
+		//System.out.println("RANDOMIZED HAND");
 	}
 	
 	/**
 	 * refills hand to 7 at the end of the turn
 	 */
 	public void refreshHand() {
-		//TODO
-		
 		for (int i = 0; i < content.size(); i++) {
 			if(content.get(i).letter == null) {
 				content.replace(i, ScrabbleBabble.tile_bag.drawRandom(i));
-				System.out.println("Refilled slot " + i);
+				//System.out.println("Refilled slot " + i);
 				continue;
 			}
 		}
@@ -59,9 +57,12 @@ public class Hand {
 	 */
 	public void placeInHand(TilePane tIn, int index) {
 		content.replace(index, tIn);
-		System.out.println("Debug");
+		//System.out.println("Debug");
 	}
-	
+	/**
+	 * checks and returns whether or not the hand is empty.
+	 * @return
+	 */
 	public boolean isHandEmpty() {
 		boolean check = true;
 		for (int i = 0; i < content.size(); i++) {

@@ -30,18 +30,20 @@ public class TileBag {
 			}
 		}
 		
-		System.out.println("init bag " + tiles.size());
+		//System.out.println("init bag " + tiles.size());
 	}
 	
 	
 	
 	/**
 	 * draws a random index and removes the tile from the ArrayList as well then sends the LetterTile 
+	 * 
+	 * @param index
 	 */
 	public TilePane drawRandom(int index) {
 		Random rand = new Random();	
 		TilePane out = ScrabbleBabble.instance.getGeneratedTilePane(null, -1);
-		System.out.println("Before Draw: " + tiles.size());
+		//System.out.println("Before Draw: " + tiles.size());
 		if (tiles.size() - 1 > 0) {
 			int r = rand.nextInt(tiles.size() - 1);
 			out = tiles.get(r);
@@ -52,14 +54,22 @@ public class TileBag {
 			tiles.clear();
 			ScrabbleBabble.board.moveTo(out, index, 0, 0);
 		}
-		System.out.println("After Draw: " + tiles.size());
+		//System.out.println("After Draw: " + tiles.size());
 		return out;
 	}
 
+	/**
+	 * checks and returns whether the bag is empty
+	 * @return
+	 */
 	public boolean isBagEmpty() {
 		return tiles.size() <= 0;
 	}
 
+	/**
+	 * Updates the passed label with the remaining tile count.
+	 * @param tiles_label
+	 */
 	public void updateTilesLeft(Label tiles_label) {
 		tiles_label.setText("Tiles Remaining: " + tiles.size() + "/100");
 	}

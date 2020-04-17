@@ -73,7 +73,6 @@ public class WordManager {
 	/**
 	 * extracts the word in the blank array above and puts into a an array with all corresponding spots
 	 *  
-	 * TODO
 	 * 
 	 * @param newgrid
 	 * @param moddedArray
@@ -84,21 +83,21 @@ public class WordManager {
 		ArrayList<int[]> arrspots = new ArrayList<int[]>();
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				System.out.print(moddedArray[i][j]);
+				//System.out.print(moddedArray[i][j]);
 				if (moddedArray[i][j] != null) {
 					arrspots.add(new int[] {i,j});
 				}
 			}
-			System.out.printf("%n");
+			//System.out.printf("%n");
 		}
 		
-		System.out.println("\n ============================================================== \n");
+		//System.out.println("\n ============================================================== \n");
 
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				System.out.print(newgrid[i][j]);
+				//System.out.print(newgrid[i][j]);
 			}
-			System.out.printf("%n");
+			//System.out.printf("%n");
 		}
 		
 		int colstart = 0;
@@ -121,7 +120,7 @@ public class WordManager {
 		}
 		LinkedList<Letter> arr = new LinkedList<Letter>();
 		if(!arrspots.isEmpty()) {
-			System.out.println("(" + rowstart + ", " + colstart + ") -> " + "(" + rowstop + ", " + colstop + ")");
+			//System.out.println("(" + rowstart + ", " + colstart + ") -> " + "(" + rowstop + ", " + colstop + ")");
 			//colstop/rowstop will ALWAYS be larger
 			for (int i = colstart; i <= colstop; i++) {
 				for (int j = rowstart; j <= rowstop; j++) {
@@ -134,10 +133,10 @@ public class WordManager {
 			//check for a tile on either end and append to end of array
 			boolean vertical = false;
 			if(colstart == colstop) {
-				System.out.println("vertial");
+				//System.out.println("vertial");
 				vertical = true;
 			} else if (rowstart == rowstop) {
-				System.out.println("horizontal");
+				//System.out.println("horizontal");
 				vertical = false;
 			}
 			
@@ -177,12 +176,7 @@ public class WordManager {
 //				Letter l = new Letter(arrletter.get(i), arrspots.get(i)[0], arrspots.get(i)[1]);
 //				arr.add(l);
 //			}
-		}
-		
-		
-		
-//		
-		
+		}		
 		return arr;
 	}
 	
@@ -200,7 +194,7 @@ public class WordManager {
 		for (Letter ti : tiles) {
 			int toAdds = ti.getLetter().score();
 			EnumEffect e = ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].effect;
-			System.out.println(ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].isUsed());
+			//System.out.println(ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].isUsed());
 			if (!ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].isUsed()) {
 				if (e == EnumEffect.DOUBLE_LETTER || e == EnumEffect.TRIPLE_LETTER) {
 					toAdds *= e.level;
@@ -224,7 +218,7 @@ public class WordManager {
 	public String getWord(LinkedList<Letter> newWord) {
 		String out = "";
 		for (Letter ti : newWord) {
-			System.out.print(ti.getLetter().letter());
+			//System.out.print(ti.getLetter().letter());
 			out += ti.getLetter().letter();
 		}
 		return out;		

@@ -12,7 +12,7 @@ public class Player {
 		hand.applyRandom();
 		id = idIn;
 		resetScore();
-		System.out.println("Made Player: " + id);
+		//System.out.println("Made Player: " + id);
 	}
 	
 	/**
