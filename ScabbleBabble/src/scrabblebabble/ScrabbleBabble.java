@@ -163,8 +163,6 @@ public class ScrabbleBabble extends Application implements Initializable {
 		Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);
 		
 		ArrayList<Object> a = new ArrayList<Object>();
-		a.add(x);
-		a.add(y);
 //		a.add(xdest);
 //		a.add(ydest);
 //		a.add(LetteTile b);
@@ -183,7 +181,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 	 * @param e
 	 */
 	public void onDragStop(MouseEvent e) {
-			
+		
 	
 	}
 
