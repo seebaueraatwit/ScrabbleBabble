@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import scrabblebabble.board.Board;
 import scrabblebabble.game.LetterTile;
 import scrabblebabble.game.Player;
+import scrabblebabble.game.Tile;
 import scrabblebabble.game.TileBag;
 import scrabblebabble.turn.TurnHandler;
 
@@ -165,15 +166,26 @@ public class ScrabbleBabble extends Application implements Initializable {
 		ArrayList<Object> a = new ArrayList<Object>();
 		a.add(x);
 		a.add(y);
-//		a.add(xdest);
-//		a.add(ydest);
-//		a.add(LetteTile b);
+
 		ClipboardContent content = new ClipboardContent();
 		content.put(tilesFormat, a);
 		db.setContent(content);
         
         e.consume();
 		
+	}
+	/**
+	 * eventhandler for drag and drop tiles
+	 * 
+	 * @param e
+	 */
+	
+	public void whileHolding(MouseEvent e) {
+        if (e.getboard().hasString()) {
+            e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+        }
+        
+        e.consume();
 	}
 	
 	/**
@@ -183,7 +195,15 @@ public class ScrabbleBabble extends Application implements Initializable {
 	 * @param e
 	 */
 	public void onDragStop(MouseEvent e) {
-			
+		Dragboard db = e.getDragboard();
+        boolean success = false;
+        if (db.hasString()) {
+            Tile.setText(db.getString());
+            success = true;
+        }
+        e.setDropCompleted(success);
+        
+        e.consume();
 	
 	}
 

@@ -48,6 +48,8 @@ public class TileMovement {
 	 * It will help understanding of the system
 	 */
 	public void moveToHand() {
+		
+		
 //		for(int i=0; i<playerHand.size(); i++) {
 //			while(playerHand.size()!=7) {
 //				int random=randomTile(letter.size());
