@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import scrabblebabble.ScrabbleBabble;
 import scrabblebabble.handlers.util.EnumEffect;
 import scrabblebabble.render.TilePane;
 
@@ -110,13 +115,118 @@ public class Board {
 	/**
 	 * Moves a tile from given spot in either hand or board to another in the hand or board
 	 * @param hand
-	 * @param xfrom
-	 * @param yfrom
+	 * @param xstart
+	 * @param ystart
+	 * @param xend
+	 * @param yend
+	 */
+	public void moveToFrom(int handfrom, int xstart, int ystart, int handto, int xend, int yend, GridPane grid) {
+		//TODO
+		
+		TilePane from;
+		TilePane to;
+		
+//		if (!isSlotEmpty(xend, yend, grid)) {
+//			System.out.println("Slot is not empty");
+//			return;
+//		}
+		
+		//get to swap
+		if(handfrom == -1) {
+			from = (TilePane) removeNodeByRowColumnIndex(xstart, ystart, grid);
+			System.out.println("1" + from.empty);
+		} else {
+			from = (TilePane) ScrabbleBabble.turn_handler.getCurrentPlayer().hand.removeFromHand(handfrom);
+			System.out.println("2 " + from.empty);
+		}
+
+		if(handto == -1) {
+			to = (TilePane) removeNodeByRowColumnIndex(xend, yend, grid);
+			System.out.println("3 " + to.empty);
+		} else {
+			to = (TilePane) ScrabbleBabble.turn_handler.getCurrentPlayer().hand.removeFromHand(handto);
+			System.out.println("4 " + to.empty);
+		}
+		
+
+		//swap
+		if(handfrom != -1) {
+			ScrabbleBabble.board.moveTo(from, -1, xend, yend);
+			grid.add(from, xend, yend);
+			System.out.println("5");
+		} else {
+			ScrabbleBabble.board.moveTo(from, handto, 0, 0);
+			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.content.set(handto, (TilePane) from);
+			System.out.println("6");
+		}
+
+		
+		if(handto != -1) {
+			ScrabbleBabble.board.moveTo(to, -1, xstart, ystart);
+			grid.add(to, xstart, ystart);
+			System.out.println("7");
+		} else {
+			ScrabbleBabble.board.moveTo(to, handfrom, 0, 0);
+			ScrabbleBabble.turn_handler.getCurrentPlayer().hand.content.set(handfrom, (TilePane) to);
+			System.out.println("8");
+		}
+		
+		System.out.println("Moved to new spot");
+	}
+	
+	/**
+	 * Sets the x and y and hand coord, mostly for initializing
+	 * @param handto
 	 * @param xto
 	 * @param yto
 	 */
-	public void moveToFrom(int hand, int xfrom, int yfrom, int handto, int xto, int yto) {
-		//TODO
-		System.out.println("Moved to new spot");
+	public void moveTo(TilePane tIn, int handto, int xto, int yto) {
+		tIn.x = xto;
+		tIn.y = yto;
+		tIn.handIndex = handto;
+	}
+	
+	/**
+	 * Uses row and collumn to get object in Gridpane, used for getting children when moving
+	 * @param row
+	 * @param column
+	 * @param gridPane
+	 * @return
+	 */
+	public static Node getNodeByRowColumnIndex(int row, int column, GridPane grid) {
+	    Node result = null;
+	    ObservableList<Node> children = grid.getChildren();
+
+	    for (Node node : children) {
+	        if(grid.getRowIndex(node) == row && grid.getColumnIndex(node) == column) {
+	            result = node;
+	            break;
+	        }
+	    }
+
+	    return result;
+	}
+	/**
+	 * checks if the spot in the gridpane is an empty slot
+	 * @param row
+	 * @param column
+	 * @param gridPane
+	 * @return
+	 */
+	public static boolean isSlotEmpty(int row, int column, GridPane grid) {
+		return ((TilePane) getNodeByRowColumnIndex(row, column, grid)).empty;
+	}
+	
+	/**
+	 * removes a node from the slot given, only removes one from that location, but one one should be there at any given time.
+	 * @param row
+	 * @param column
+	 * @param grid
+	 * @return
+	 */
+	public Node removeNodeByRowColumnIndex(int row, int column, GridPane grid) {
+		Node n = getNodeByRowColumnIndex(row, column, grid);
+		grid.getChildren().remove(n);
+		return n;
 	}
 }

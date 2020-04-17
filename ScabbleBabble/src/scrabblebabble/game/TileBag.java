@@ -3,6 +3,7 @@ package scrabblebabble.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import scrabblebabble.ScrabbleBabble;
 import scrabblebabble.handlers.util.EnumLetter;
 import scrabblebabble.render.TilePane;
 
@@ -25,7 +26,7 @@ public class TileBag {
 		for (int i = 0; i < 27; i++) {
 			EnumLetter current = EnumLetter.getById(i);
 			for (int j = 0; j < current.quantity() * 4; j++) {
-				tiles.add(LetterTile.getGeneratedTilePane(new LetterTile(current, i * 100 + j)));
+				tiles.add(ScrabbleBabble.instance.getGeneratedTilePane(new LetterTile(current, i * 100 + j)));
 			}
 		}
 		
@@ -42,7 +43,7 @@ public class TileBag {
 		int r = rand.nextInt(tiles.size() - 1);
 		TilePane out = tiles.get(r);
 		tiles.remove(r);
-		out.held.setTilePosition(0, 0, index);
+		ScrabbleBabble.board.moveTo(out, index, 0, 0);
 		return out;
 	}
 }
