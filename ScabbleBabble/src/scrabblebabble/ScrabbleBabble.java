@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -56,41 +57,50 @@ public class ScrabbleBabble extends Application implements Initializable {
 	public static Node dragging;
 	
 	
-	
+	//TOOLBAR ELEMENTS
 	@FXML public ToolBar toolbar1;
 	@FXML public Button game_options_1;
 	@FXML public Label turn_label;
 	@FXML public Spinner players_input;
+	@FXML public Label winner_label;
 		  
-	
+	//MAIN PANE
 	@FXML public BorderPane main_layout;
 	
+	//SCRABBLE GRID
 	@FXML public StackPane center_stack;
 	@FXML public GridPane tiles_organizer;
 	
+	//HAND AND BOTTOM ELEMENTS
 	@FXML public StackPane bottom_stack;
 	@FXML public FlowPane bottom_flow;
 	@FXML public FlowPane hand_organizer;
 		  public StackPane[] hand_containers = new StackPane[7];
 	@FXML public StackPane hand_stack;
 	
+	//LEFT ELEMENTS
 	@FXML public StackPane left_stack;
 	@FXML public FlowPane left_organizer;
 
+	//MISC
 	@FXML public ImageView scores_background;
 	@FXML public ImageView tiles_background;
 	@FXML public ImageView hand_background;
 	@FXML public Button pass_button;
 	
+	//RIGHT SIDE ELEMENTS
 	@FXML public StackPane right_stack;
 	@FXML public Label info_label;
 	@FXML public StackPane bag_stack;
 	@FXML public ImageView bag_image;
 	@FXML public Label tiles_label;
+	@FXML public FlowPane scores_pane;
 	@FXML public Label score_label_1;
 	@FXML public Label score_label_2;
 	@FXML public Label score_label_3;
 	@FXML public Label score_label_4;
+	@FXML public Label filler_label;
+	@FXML public Label last_word_label;
 	
 	public static final DataFormat tilesFormat = new DataFormat("scrabblebabble.tile");
 	
@@ -116,8 +126,9 @@ public class ScrabbleBabble extends Application implements Initializable {
 //		tilePrefab.getChildren().add(i);
 		
 		
-		
 		s.setScene(new Scene(p));
+		s.setTitle("ScrabbleBabble!!");
+		s.setResizable(false);
 		s.show();		
 	}
 
@@ -129,6 +140,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 			public void handle(ActionEvent event) {
 				newGame((int) players_input.getValueFactory().getValue());
 				updateHand(turn_handler.getCurrentPlayer());
+				pass_button.setDisable(false);
 				tile_bag.updateTilesLeft(tiles_label);
 			}
 		});
@@ -136,7 +148,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		pass_button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				turn_handler.nextTurnCycle();
+				turn_handler.nextTurnCycle(tiles_organizer, scores_pane, winner_label, pass_button);
 				updateHand(turn_handler.getCurrentPlayer());
 				tile_bag.updateTilesLeft(tiles_label);
 				turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
@@ -210,6 +222,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 						 + "5) The game ends when the bag \n"
 						 + "is empty and one player\'s hand \n"
 						 + "is empty as well \n\n\n\n\n");
+		filler_label.setText("\n \n \n \n");
 		
 		//Image for the tile bag
 		File aImage = new File(System.getProperty("user.dir") + "/pouch.png");
@@ -232,7 +245,8 @@ public class ScrabbleBabble extends Application implements Initializable {
 		for (int i = 0; i < turn_handler.numPlayers; i++) {
 			Player p = new Player(i);
 			turn_handler.players[i] = p;
-			System.out.println(p.toString());
+			//System.out.println(p.toString());
+			((Label) scores_pane.getChildren().get(i)).setText("Player " + (i + 1) + " Score: ");
 		}
 		turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
 		
@@ -282,8 +296,9 @@ public class ScrabbleBabble extends Application implements Initializable {
 //		r.setHeight(30.0);
 //		r.setFill(Color.GREEN);
 //		p.getChildren().add(r);
-//		p.setAlignment(Pos.CENTER);		
 		
+		
+		p.setAlignment(Pos.CENTER);		
 		p.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent e) {
 		    	Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);

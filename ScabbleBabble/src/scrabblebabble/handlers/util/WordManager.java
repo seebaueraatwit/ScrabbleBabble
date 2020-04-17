@@ -1,7 +1,10 @@
 package scrabblebabble.handlers.util;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import scrabblebabble.ScrabbleBabble;
 import scrabblebabble.board.Board;
@@ -12,14 +15,23 @@ public class WordManager {
 	EnumLetter[][] lastboard = new EnumLetter[15][15];
 	EnumLetter[][] newboard;
 	
+	public static final WordManager instance = new WordManager();
 
-	public void updateScoreboard() {
-		//TODO
-	}
-	
-	public int calcScore() {
-		//TODO
-		return 0;		
+		
+	public int calcScore(GridPane grid, FlowPane labelToMod, boolean bonus) {
+		EnumLetter[][] gridnew = getNewGrid(grid);
+		EnumLetter[][] modifiedGrid = checkChanges(grid);
+		LinkedList<Letter> newWord = extractNewWord(modifiedGrid, gridnew);
+		int scoreOut = getScore(newWord);
+		
+		if (ScrabbleBabble.turn_handler.getCurrentPlayer().hand.isHandEmpty() && newWord.size() == 7) {
+			bonus = true;
+			scoreOut += 50;
+		}
+		
+		((Label) labelToMod.getChildren().get(5)).setText("Latest Word : \"" + WordManager.instance.getWord(newWord) + "\" \nWith score = " + scoreOut  + (bonus ? "\nWith +50 Bonus!" : ""));
+		//System.out.println(newWord.toString());
+		return scoreOut;
 	}
 	
 	public EnumLetter[][] getNewGrid(GridPane gridnew) {
@@ -28,8 +40,10 @@ public class WordManager {
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				TilePane t = (TilePane) Board.getNodeByRowColumnIndex(i, j, gridnew);
+				//System.out.print(t.letter);
 				e[i][j] = t.letter;
 			}
+			//System.out.println("\n");
 		}
 		return e;
 	}
@@ -57,32 +71,44 @@ public class WordManager {
 	}
 	
 	/**
-	 * extracts the word in the blank array above and puts into a single array while interpolating missing letters (sorta?)
+	 * extracts the word in the blank array above and puts into a an array with all corresponding spots
 	 *  
 	 * TODO
 	 * 
-	 * @param newArray
+	 * @param newgrid
 	 * @param moddedArray
 	 * @return
 	 */
-	public EnumLetter[] extractNewWord(EnumLetter[][] moddedArray, EnumLetter[][] newArray) {
+	public LinkedList<Letter> extractNewWord(EnumLetter[][] moddedArray, EnumLetter[][] newgrid) {
 		ArrayList<EnumLetter> arrletter = new ArrayList<EnumLetter>();
 		ArrayList<int[]> arrspots = new ArrayList<int[]>();
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
+				System.out.print(moddedArray[i][j]);
 				if (moddedArray[i][j] != null) {
 					arrspots.add(new int[] {i,j});
 				}
-			}	
+			}
+			System.out.printf("%n");
 		}
+		
+		System.out.println("\n ============================================================== \n");
 
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				System.out.print(newgrid[i][j]);
+			}
+			System.out.printf("%n");
+		}
+		
 		int colstart = 0;
 		int rowstart = 0;
 		int colstop = 0;
 		int rowstop = 0;
 		for (int i = 0; i < arrspots.size(); i++) {
-			int colComp = arrspots.get(i)[0];
-			int rowComp = arrspots.get(i)[1];
+			int rowComp = arrspots.get(i)[0];
+			int colComp = arrspots.get(i)[1];
+			//System.out.println("(" + rowComp + ", " + colComp + ")");
 			if (i == 0) {
 				colstart = colComp;
 				rowstart = rowComp;
@@ -91,25 +117,76 @@ public class WordManager {
 				colstop = colComp;
 				rowstop = rowComp;
 			}
+			
 		}
-		
-		//colstop/rowstop will ALWAYS be larger
-		for (int i = colstart; i < colstop; i++) {
-			for (int j = rowstart; j < rowstop; j++) {
-				arrletter.add(moddedArray[i][j]);
+		LinkedList<Letter> arr = new LinkedList<Letter>();
+		if(!arrspots.isEmpty()) {
+			System.out.println("(" + rowstart + ", " + colstart + ") -> " + "(" + rowstop + ", " + colstop + ")");
+			//colstop/rowstop will ALWAYS be larger
+			for (int i = colstart; i <= colstop; i++) {
+				for (int j = rowstart; j <= rowstop; j++) {
+					//System.out.print(moddedArray[j][i]);
+					arr.add(new Letter(newgrid[j][i], i, j));
+				}
+				//System.out.println("");
 			}
+			
+			//check for a tile on either end and append to end of array
+			boolean vertical = false;
+			if(colstart == colstop) {
+				System.out.println("vertial");
+				vertical = true;
+			} else if (rowstart == rowstop) {
+				System.out.println("horizontal");
+				vertical = false;
+			}
+			
+			if(vertical) {
+				if (rowstart - 1 >= 0) {
+					if(newgrid[rowstart-1][colstart] != null) {
+						//System.out.println(newgrid[rowstart-1][colstart]);
+						arr.addFirst(new Letter (newgrid[rowstart-1][colstart], colstart, rowstart-1));
+					}
+				}
+				if (rowstop+1 < 15) {
+					if(newgrid[rowstop+1][colstart] != null) {
+						//System.out.println(newgrid[rowstop+1][colstart]);
+						arr.addLast(new Letter(newgrid[rowstop+1][colstart], colstart, rowstop+1));		
+					}
+				}
+			} else {
+				if (colstart-1 >= 0) {
+					if(newgrid[rowstart][colstart-1] != null) {
+						//System.out.println(newgrid[rowstart][colstart-1]);
+						arr.addFirst(new Letter(newgrid[rowstart][colstart-1], colstart-1, rowstart));
+					}
+				}
+				if (colstop+1 < 15) {
+					if(newgrid[rowstart][colstop+1] != null) {
+						//System.out.println(newgrid[rowstop][colstart+1]);
+						arr.addLast(new Letter(newgrid[rowstart][colstop+1], colstop+1, rowstart));	
+					}
+				}
+			}
+			
+			for (int i = 0; i < arr.size(); i++) {
+				
+			}
+//			
+//			for(int i = 0; i < arrspots.size(); i++) {
+//				Letter l = new Letter(arrletter.get(i), arrspots.get(i)[0], arrspots.get(i)[1]);
+//				arr.add(l);
+//			}
 		}
 		
-		//check for a tile on either end and append to end of array
-		boolean check = isHorizVerti(arrletter);
 		
-		return (EnumLetter[]) arrletter.toArray();
+		
+//		
+		
+		return arr;
 	}
 	
-	private boolean isHorizVerti(ArrayList<EnumLetter> arrletter) {
-		
-		return false;
-	}
+	
 
 	/**
 	 * returns the score from an array of tiles gathered
@@ -117,57 +194,64 @@ public class WordManager {
 	 * @param tiles
 	 * @return
 	 */
-	public int getScore(EnumLetter[] tiles) {
+	public int getScore(LinkedList<Letter> tiles) {
 		int out = 0;
-		for (EnumLetter ti : tiles) {
-			out += ti.score();
+		int factor = 1;
+		for (Letter ti : tiles) {
+			int toAdds = ti.getLetter().score();
+			EnumEffect e = ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].effect;
+			System.out.println(ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].isUsed());
+			if (!ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].isUsed()) {
+				if (e == EnumEffect.DOUBLE_LETTER || e == EnumEffect.TRIPLE_LETTER) {
+					toAdds *= e.level;
+				} else {
+					factor *= e.level;
+				}
+				ScrabbleBabble.board.grid[ti.getRow()][ti.getCol()].used();
+			}
+			out += toAdds;
+			//System.out.println(ti.getLetter().letter());
 		}
-		return out;
+		return out * factor;
 	}
 	
 	/**
-	 * returns the word of the array of tiles sent
+	 * returns the word of the arraylist of letters sent
 	 * 
 	 * @param tiles
 	 * @return
 	 */
-	public String getWord(EnumLetter[] tiles) {
+	public String getWord(LinkedList<Letter> newWord) {
 		String out = "";
-		for (EnumLetter ti : tiles) {
-			out += ti.letter();
+		for (Letter ti : newWord) {
+			System.out.print(ti.getLetter().letter());
+			out += ti.getLetter().letter();
 		}
 		return out;		
-	}
+	}	
 	
-	/** 
-	 * creates a word from the range of tiles provided, with deterimination on row or coloumn
-	 * 
-	 * @param hv
-	 * @param rowCol
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	public EnumLetter[] compileIterativeWord(String hv, int rowCol, int start, int end) {
-		if(hv == "h") {
-			EnumLetter[] out = new EnumLetter[end - start];
-			for (int j = 0; j < ScrabbleBabble.board.grid[rowCol].length; j++) {
-				if (j >= start && j <= end) {
-					out[j-start] = ScrabbleBabble.board.grid[rowCol][j].occupant.letter;			
-				}
-			}
-			return out;
-		} else if (hv == "v" ) {
-			EnumLetter[] out = new EnumLetter[end - start];
-			for (int j = 0; j < ScrabbleBabble.board.grid.length; j++) {
-				if (j >= start && j <= end) {
-					out[j-start] = ScrabbleBabble.board.grid[j][rowCol].occupant.letter;			
-				}
-			}
-			return out;
-		} else {
-			throw new ArrayIndexOutOfBoundsException();
+	static class Letter {
+		
+		EnumLetter letter;
+		int row;
+		int col;
+		
+		protected Letter(EnumLetter letterIn, int colIn, int rowIn) {
+			this.letter = letterIn;
+			this.row = rowIn;
+			this.col = colIn;
+		}
+		
+		protected EnumLetter getLetter() {
+			return this.letter;
+		}
+		
+		protected int getRow() {
+			return row;
+		}
+		
+		protected int getCol() {
+			return col;
 		}
 	}
-	
 }

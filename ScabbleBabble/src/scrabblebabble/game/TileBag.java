@@ -41,12 +41,18 @@ public class TileBag {
 	public TilePane drawRandom(int index) {
 		Random rand = new Random();	
 		TilePane out = ScrabbleBabble.instance.getGeneratedTilePane(null, -1);
-		if (tiles.size() > 0) {
+		System.out.println("Before Draw: " + tiles.size());
+		if (tiles.size() - 1 > 0) {
 			int r = rand.nextInt(tiles.size() - 1);
 			out = tiles.get(r);
 			tiles.remove(r);
 			ScrabbleBabble.board.moveTo(out, index, 0, 0);
+		} else if (tiles.size() == 1) {
+			out = tiles.get(0);
+			tiles.clear();
+			ScrabbleBabble.board.moveTo(out, index, 0, 0);
 		}
+		System.out.println("After Draw: " + tiles.size());
 		return out;
 	}
 

@@ -33,7 +33,7 @@
                   <Image url="@../../board.png" />
                </image>
             </ImageView>
-            <GridPane fx:id="tiles_organizer" alignment="CENTER" maxHeight="710.0" maxWidth="710.0" minHeight="710.0" minWidth="710.0" prefHeight="710.0" prefWidth="710.0" StackPane.alignment="CENTER_LEFT">
+            <GridPane fx:id="tiles_organizer" alignment="CENTER" maxHeight="710.0" maxWidth="710.0" minHeight="710.0" minWidth="710.0" prefHeight="710.0" prefWidth="710.0" StackPane.alignment="CENTER">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -101,14 +101,20 @@
                   <Label fx:id="info_label" text="Info:" />
                   <StackPane fx:id="bag_stack" prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="bag_image" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="bag_image" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
                         <Label fx:id="tiles_label" />
                      </children>
                   </StackPane>
-                  <Label fx:id="score_label_1" text="Score:" />
-                  <Label fx:id="score_label_2" layoutX="94.0" layoutY="44.0" text="3" />
-                  <Label fx:id="score_label_3" layoutX="94.0" layoutY="61.0" text="Score:" />
-                  <Label fx:id="score_label_4" layoutX="94.0" layoutY="78.0" text="Score:" />
+                  <FlowPane fx:id="scores_pane" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="250.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="score_label_1" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" textAlignment="RIGHT" />
+                        <Label fx:id="score_label_2" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" />
+                        <Label fx:id="score_label_3" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" />
+                        <Label fx:id="score_label_4" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" />
+                        <Label fx:id="filler_label" alignment="CENTER" prefWidth="150.0" text="\\n \n \n \n" />
+                        <Label fx:id="last_word_label" alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" text="Latest Word: " textAlignment="CENTER" />
+                     </children>
+                  </FlowPane>
                </children>
             </FlowPane>
          </children>
@@ -120,6 +126,7 @@
           <Button fx:id="game_options_1" mnemonicParsing="false" text="New Game" />
             <Spinner fx:id="players_input" editable="true" prefWidth="50.0" />
             <Label fx:id="turn_label" text="Press &quot;New Game&quot; to Start!!!" />
+            <Label fx:id="winner_label" />
         </items>
       </ToolBar>
    </top>
