@@ -2,8 +2,11 @@ package scrabblebabble;
 
 import java.io.File;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -11,12 +14,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -30,9 +36,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 import scrabblebabble.board.Board;
 import scrabblebabble.game.Player;
 import scrabblebabble.game.TileBag;
@@ -51,10 +56,12 @@ public class ScrabbleBabble extends Application implements Initializable {
 	public static Node dragging;
 	
 	
-	@FXML public Button game_options_1;
-	@FXML public Label turn_label;
 	
 	@FXML public ToolBar toolbar1;
+	@FXML public Button game_options_1;
+	@FXML public Label turn_label;
+	@FXML public Spinner players_input;
+		  
 	
 	@FXML public BorderPane main_layout;
 	
@@ -77,8 +84,13 @@ public class ScrabbleBabble extends Application implements Initializable {
 	
 	@FXML public StackPane right_stack;
 	@FXML public Label info_label;
-	@FXML public Label scores_label;
+	@FXML public StackPane bag_stack;
+	@FXML public ImageView bag_image;
 	@FXML public Label tiles_label;
+	@FXML public Label score_label_1;
+	@FXML public Label score_label_2;
+	@FXML public Label score_label_3;
+	@FXML public Label score_label_4;
 	
 	public static final DataFormat tilesFormat = new DataFormat("scrabblebabble.tile");
 	
@@ -111,11 +123,13 @@ public class ScrabbleBabble extends Application implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		//buton press event handlers
 		game_options_1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				newGame(2);
+				newGame((int) players_input.getValueFactory().getValue());
 				updateHand(turn_handler.getCurrentPlayer());
+				tile_bag.updateTilesLeft(tiles_label);
 			}
 		});
 
@@ -123,7 +137,9 @@ public class ScrabbleBabble extends Application implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				turn_handler.nextTurnCycle();
-				turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1) + " | (" + turn_handler.currentPlayer + ")");
+				updateHand(turn_handler.getCurrentPlayer());
+				tile_bag.updateTilesLeft(tiles_label);
+				turn_label.setText("Current Player: Player " + (turn_handler.currentPlayer + 1));
 			}
 		});
 		
@@ -146,6 +162,60 @@ public class ScrabbleBabble extends Application implements Initializable {
 			hand_organizer.getChildren().add(i, sp);
 		}
 		
+		//tooltip for the spinner
+		Tooltip players_input_tooltip = new Tooltip("Number of players playing.");
+		players_input.setTooltip(players_input_tooltip);
+		players_input.setPromptText("2");
+		
+		//checks if the key input into editor is a non-numeral
+		NumberFormat format = NumberFormat.getIntegerInstance();
+		UnaryOperator<TextFormatter.Change> filter = c -> {
+		    if (c.isContentChange()) {
+		        ParsePosition parsePosition = new ParsePosition(0);
+		        // NumberFormat checks the beginning of the text
+		        format.parse(c.getControlNewText(), parsePosition);
+		        if (parsePosition.getIndex() == 0 ||
+		                parsePosition.getIndex() < c.getControlNewText().length()) {
+		            // reject parsing the complete text failed
+		            return null;
+		        }
+		    }
+		    return c;
+		};
+		TextFormatter<Integer> playersFormatter = new TextFormatter<Integer>(
+		        new IntegerStringConverter(), 4, filter);
+		
+		players_input.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, Integer.parseInt("4")));
+		players_input.setEditable(true);
+		players_input.getEditor().setTextFormatter(playersFormatter);
+		
+		//Tooltips for the buttons
+		Tooltip new_game_tooltip = new Tooltip("Start a new game.");
+		game_options_1.setTooltip(new_game_tooltip);
+		
+		Tooltip pass_Tooltip = new Tooltip("Pass the turn to the next player.");
+		pass_button.setTooltip(pass_Tooltip);
+		
+		//set infromation text for the rules and instructions
+		info_label.setText("               How to Play: \n"
+						 + "1) Use the spinner in the top bar \n"
+						 + "to choose the number of players. \n"
+						 + "2) Hit \"New game\" to start the game. \n"
+						 + "3) The first player places a word "
+						 + "\ndown using the center tile, \n"
+						 + "that word is worth double.\n"
+						 + "4) That player passes their turn \n"
+						 + "to the next player who then \n"
+						 + "builds off that firs played word. \n"
+						 + "5) The game ends when the bag \n"
+						 + "is empty and one player\'s hand \n"
+						 + "is empty as well \n\n\n\n\n");
+		
+		//Image for the tile bag
+		File aImage = new File(System.getProperty("user.dir") + "/pouch.png");
+		Image bagImg1 = new Image(aImage.toURI().toString());
+		bag_image.setImage(bagImg1);
+		tiles_label.setTranslateY(25.0);
 	}
 	
 	/** 
@@ -175,6 +245,10 @@ public class ScrabbleBabble extends Application implements Initializable {
 	
 	
 
+	/**
+	 * Method used to update player hand at gamestart and newturn, all movements go through board manipulator
+	 * @param p
+	 */
 	public void updateHand(Player p) {
 		for (int i = 0; i < p.hand.content.size(); i++) {
 			TilePane l = p.hand.content.get(i);
@@ -183,6 +257,15 @@ public class ScrabbleBabble extends Application implements Initializable {
 		}
 	}
 	
+	/**
+	 * Generates a TilePane for the letter given, id is just for identifying in debug. 
+	 * If letterIn is null, then the tilepane is given the emoty tag. 
+	 * (mostly used for the board and when the bag is empty)
+	 * 
+	 * @param letterIn
+	 * @param idIn
+	 * @return
+	 */
 	public TilePane getGeneratedTilePane(EnumLetter letterIn, int idIn) {
 		TilePane p = new TilePane(letterIn, idIn);
 		if (letterIn != null) {
@@ -198,16 +281,16 @@ public class ScrabbleBabble extends Application implements Initializable {
 //		r.setWidth(30.0);
 //		r.setHeight(30.0);
 //		r.setFill(Color.GREEN);
-		
 //		p.getChildren().add(r);
-		p.setAlignment(Pos.CENTER);		
+//		p.setAlignment(Pos.CENTER);		
 		
 		p.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent e) {
 		    	Dragboard db = ((Node)e.getSource()).startDragAndDrop(TransferMode.ANY);
 				if (p.letter != null) {
 					ArrayList<Integer> a = new ArrayList<Integer>(); 
-									
+							
+					//add info to dragboard
 					a.add(p.x);
 					a.add(p.y);
 					a.add(p.handIndex);

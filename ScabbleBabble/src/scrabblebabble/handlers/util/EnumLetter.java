@@ -3,7 +3,7 @@ package scrabblebabble.handlers.util;
 public enum EnumLetter {
 
 	//LETTER("LETTER", ID, SCORE, QUANTIY_START);
-	BLANK("?", 0, 0, 2),
+	BLANK("_", 0, 0, 2),
 	A("A", 1, 1, 9),
 	B("B", 2, 3, 2),
 	C("C", 3, 3, 2),

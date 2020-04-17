@@ -58,20 +58,19 @@ public class WordManager {
 	
 	/**
 	 * extracts the word in the blank array above and puts into a single array while interpolating missing letters (sorta?)
-	 * 
-	 * THIS WHOLE FUCKIN THING MAY NEED REWRITING, or just removing if time isnt available.
-	 * 
+	 *  
 	 * TODO
 	 * 
-	 * @param arrIn
+	 * @param newArray
+	 * @param moddedArray
 	 * @return
 	 */
-	public EnumLetter[] extractNewWord(EnumLetter[][] arrIn) {
+	public EnumLetter[] extractNewWord(EnumLetter[][] moddedArray, EnumLetter[][] newArray) {
 		ArrayList<EnumLetter> arrletter = new ArrayList<EnumLetter>();
 		ArrayList<int[]> arrspots = new ArrayList<int[]>();
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				if (arrIn[i][j] != null) {
+				if (moddedArray[i][j] != null) {
 					arrspots.add(new int[] {i,j});
 				}
 			}	
@@ -97,13 +96,21 @@ public class WordManager {
 		//colstop/rowstop will ALWAYS be larger
 		for (int i = colstart; i < colstop; i++) {
 			for (int j = rowstart; j < rowstop; j++) {
-				arrletter.add(arrIn[i][j]);
+				arrletter.add(moddedArray[i][j]);
 			}
 		}
+		
+		//check for a tile on either end and append to end of array
+		boolean check = isHorizVerti(arrletter);
 		
 		return (EnumLetter[]) arrletter.toArray();
 	}
 	
+	private boolean isHorizVerti(ArrayList<EnumLetter> arrletter) {
+		
+		return false;
+	}
+
 	/**
 	 * returns the score from an array of tiles gathered
 	 * 

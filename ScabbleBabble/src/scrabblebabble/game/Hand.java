@@ -32,10 +32,18 @@ public class Hand {
 	 */
 	public void refreshHand() {
 		//TODO
+		
+		for (int i = 0; i < content.size(); i++) {
+			if(content.get(i).letter == null) {
+				content.replace(i, ScrabbleBabble.tile_bag.drawRandom(i));
+				System.out.println("Refilled slot " + i);
+				continue;
+			}
+		}
 	}
 	
 	/**
-	 * voids the index and returns the contents
+	 * takes the index and returns the contents
 	 * @param index
 	 * @return
 	 */
@@ -44,9 +52,25 @@ public class Hand {
 		return n;
 	}
 	
+	/**
+	 * replace the index with the given TilePane
+	 * @param tIn
+	 * @param index
+	 */
 	public void placeInHand(TilePane tIn, int index) {
 		content.replace(index, tIn);
 		System.out.println("Debug");
+	}
+	
+	public boolean isHandEmpty() {
+		boolean check = true;
+		for (int i = 0; i < content.size(); i++) {
+			if (!content.get(i).empty) {
+				check = false;
+				break;
+			}
+		}
+		return check;
 	}
 	
 }

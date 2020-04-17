@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane fx:id="main_layout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="874.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scrabblebabble.ScrabbleBabble">
+<BorderPane fx:id="main_layout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scrabblebabble.ScrabbleBabble">
    <left>
       <StackPane fx:id="left_stack" prefHeight="150.0" prefWidth="82.0" BorderPane.alignment="CENTER">
          <children>
@@ -93,13 +94,21 @@
       </StackPane>
    </bottom>
    <right>
-      <StackPane fx:id="right_stack" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="82.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="right_stack" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <FlowPane fx:id="left_organizer" alignment="TOP_CENTER" columnHalignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="200.0" prefWidth="100.0">
+            <FlowPane fx:id="left_organizer" alignment="TOP_CENTER" columnHalignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="710.0" prefWidth="400.0" StackPane.alignment="TOP_CENTER">
                <children>
                   <Label fx:id="info_label" text="Info:" />
-                  <Label fx:id="tiles_label" text="Tiles Left" />
-                  <Label fx:id="scores_label" text="Score:" />
+                  <StackPane fx:id="bag_stack" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="bag_image" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="tiles_label" />
+                     </children>
+                  </StackPane>
+                  <Label fx:id="score_label_1" text="Score:" />
+                  <Label fx:id="score_label_2" layoutX="94.0" layoutY="44.0" text="3" />
+                  <Label fx:id="score_label_3" layoutX="94.0" layoutY="61.0" text="Score:" />
+                  <Label fx:id="score_label_4" layoutX="94.0" layoutY="78.0" text="Score:" />
                </children>
             </FlowPane>
          </children>
@@ -109,6 +118,7 @@
       <ToolBar fx:id="toolbar1" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <Button fx:id="game_options_1" mnemonicParsing="false" text="New Game" />
+            <Spinner fx:id="players_input" editable="true" prefWidth="50.0" />
             <Label fx:id="turn_label" text="Press &quot;New Game&quot; to Start!!!" />
         </items>
       </ToolBar>

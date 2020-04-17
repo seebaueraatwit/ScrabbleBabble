@@ -3,6 +3,7 @@ package scrabblebabble.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.scene.control.Label;
 import scrabblebabble.ScrabbleBabble;
 import scrabblebabble.handlers.util.EnumLetter;
 import scrabblebabble.render.TilePane;
@@ -23,10 +24,9 @@ public class TileBag {
 		
 		tiles.clear();
 		
-		for (int i = 0; i < 27; i++) {
-			EnumLetter current = EnumLetter.getById(i);
-			for (int j = 0; j < current.quantity() * 4; j++) {
-				tiles.add(ScrabbleBabble.instance.getGeneratedTilePane(current, i * 100 + j));
+		for (EnumLetter current : EnumLetter.values()) {
+			for (int j = 0; j < current.quantity(); j++) {
+				tiles.add(ScrabbleBabble.instance.getGeneratedTilePane(current, current.id() * 100 + j));
 			}
 		}
 		
@@ -40,10 +40,21 @@ public class TileBag {
 	 */
 	public TilePane drawRandom(int index) {
 		Random rand = new Random();	
-		int r = rand.nextInt(tiles.size() - 1);
-		TilePane out = tiles.get(r);
-		tiles.remove(r);
-		ScrabbleBabble.board.moveTo(out, index, 0, 0);
+		TilePane out = ScrabbleBabble.instance.getGeneratedTilePane(null, -1);
+		if (tiles.size() > 0) {
+			int r = rand.nextInt(tiles.size() - 1);
+			out = tiles.get(r);
+			tiles.remove(r);
+			ScrabbleBabble.board.moveTo(out, index, 0, 0);
+		}
 		return out;
+	}
+
+	public boolean isBagEmpty() {
+		return tiles.size() <= 0;
+	}
+
+	public void updateTilesLeft(Label tiles_label) {
+		tiles_label.setText("Tiles Remaining: " + tiles.size() + "/100");
 	}
 }

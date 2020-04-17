@@ -20,16 +20,27 @@ public class TurnHandler {
 	 * goes to the next turn
 	 */
 	public void nextTurnCycle() {
-		if (currentPlayer > numPlayers) {
-			currentPlayer = 0;
-		} else {
-			currentPlayer++;
+		// refill hand
+		int scoreToAdd = 0;
+		getCurrentPlayer().hand.refreshHand();
+		
+		if (getCurrentPlayer().hand.isHandEmpty() && ScrabbleBabble.tile_bag.isBagEmpty()) {
+			end();
 		}
 		
-		
+		// cycle hand
+		currentPlayer++;
+		if (currentPlayer >= numPlayers) {
+			currentPlayer = 0;
+		}
 	}
 	
-	
+	/**
+	 * Ends the game, run when a player's hand is detected as empty.
+	 */
+	public void end() {
+		System.out.println("ENDING GAME");
+	}
 	
 	/**
 	 * return current player instance for hand collection.
