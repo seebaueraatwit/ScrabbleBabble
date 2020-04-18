@@ -142,6 +142,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 				updateHand(turn_handler.getCurrentPlayer());
 				pass_button.setDisable(false);
 				tile_bag.updateTilesLeft(tiles_label);
+				game_options_1.setDisable(true);
 			}
 		});
 
@@ -212,7 +213,7 @@ public class ScrabbleBabble extends Application implements Initializable {
 		info_label.setText("               How to Play: \n"
 						 + "1) Use the spinner in the top bar \n"
 						 + "to choose the number of players. \n"
-						 + "2) Hit \"New game\" to start the game. \n"
+						 + "2) Hit \"Start Game\" to start the game. \n"
 						 + "3) The first player places a word "
 						 + "\ndown using the center tile, \n"
 						 + "that word is worth double.\n"

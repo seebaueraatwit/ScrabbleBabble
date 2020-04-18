@@ -123,7 +123,7 @@
    <top>
       <ToolBar fx:id="toolbar1" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <Button fx:id="game_options_1" mnemonicParsing="false" text="New Game" />
+          <Button fx:id="game_options_1" mnemonicParsing="false" text="Start Game" />
             <Spinner fx:id="players_input" editable="true" prefWidth="50.0" />
             <Label fx:id="turn_label" text="Press &quot;New Game&quot; to Start!!!" />
             <Label fx:id="winner_label" />
